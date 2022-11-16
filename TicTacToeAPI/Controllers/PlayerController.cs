@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TicTacToeAPI.Data;
+using TicTacToeAPI.Model;
 
 namespace TicTacToeAPI.Controllers
 {
@@ -19,6 +20,17 @@ namespace TicTacToeAPI.Controllers
         {
             var players = await dbContext.Players.ToListAsync();
             return Ok(players);
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddPlayer(Player newPlayer)
+        {
+            if (newPlayer.Id == null || newPlayer.Name == null)
+            {
+                return BadRequest("Please type all the required fields.");
+            }
+            await dbContext.Players.AddAsync(newPlayer);
+            await dbContext.SaveChangesAsync();
+            return Ok(newPlayer);
         }
     }
 }
