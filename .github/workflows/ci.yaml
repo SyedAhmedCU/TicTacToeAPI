@@ -19,7 +19,7 @@ jobs:
       run: dotnet test TicTacToe.sln -c Release --no-build
     
     - name: Run automated unit and integration tests
-      run: dotnet test TicTacToeAPI.UnitTests/TicTacToeAPI.UnitTests.csproj --configuration ${{ env.dotNetConfiguration }} --settings:./TicTacToeAPI.UnitTests/CodeCoverage.runsettings /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=lcov
+      run: dotnet test TicTacToeAPI.UnitTests/TicTacToeAPI.UnitTests.csproj /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=lcov
     
     - name: Publish coverage report to coveralls.io
       uses: coverallsapp/github-action@master
