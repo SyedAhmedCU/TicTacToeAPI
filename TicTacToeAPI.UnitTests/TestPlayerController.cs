@@ -26,5 +26,36 @@ namespace TicTacToe.UnitTests.Systems.Controllers
             //Assert
             result.StatusCode.Should().Be(200);
         }
+        [Fact]
+        public async Task Post_OnSuccess_ReturnNewPlayerModel()
+        {
+            var optionsBuilder = new DbContextOptionsBuilder<TicTacToeAPIDbContext>()
+                .UseInMemoryDatabase("GameDb");
+            var dbContext = new TicTacToeAPIDbContext(optionsBuilder.Options);
+            //Arrange
+            var sut = new PlayerController(dbContext);
+
+            //Act
+            var OkObjectResult = (OkObjectResult)await sut.AddPlayer("TestPlayer");
+            //Assert
+            OkObjectResult.Value.Should().BeOfType<TicTacToeAPI.Model.Player>();
+        }
+        [Fact]
+        public async Task Post_OnSuccess_ReturnStatusCode400PlayerExist()
+        {
+            var optionsBuilder = new DbContextOptionsBuilder<TicTacToeAPIDbContext>()
+                .UseInMemoryDatabase("GameDb");
+            var dbContext = new TicTacToeAPIDbContext(optionsBuilder.Options);
+            //Arrange
+            var sut = new PlayerController(dbContext);
+
+            //Act
+            //adding same player should return a bad request 
+            var OkObjectResult = (OkObjectResult)await sut.AddPlayer("SameTestPlayer");
+            var BadRequestObjectResult = (BadRequestObjectResult)await sut.AddPlayer("SameTestPlayer");
+            //Assert
+            OkObjectResult.Value.Should().BeOfType<TicTacToeAPI.Model.Player>();
+            BadRequestObjectResult.StatusCode.Should().Be(400);
+        }
     }
 }
