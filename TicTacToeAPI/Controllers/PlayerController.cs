@@ -22,11 +22,16 @@ namespace TicTacToeAPI.Controllers
             return Ok(players);
         }
         [HttpPost]
-        public async Task<IActionResult> AddPlayer(Player newPlayer)
+        public async Task<IActionResult> AddPlayer(string name)
         {
-            if (newPlayer.Id == null || newPlayer.Name == null)
+            var newPlayer = new Player()
             {
-                return BadRequest("Please type all the required fields.");
+                Name = name
+            };
+            var nameExist = await dbContext.Players.Where(p => p.Name.ToLower() == name.ToLower()).FirstOrDefaultAsync();
+            if (nameExist != null)
+            {
+                return BadRequest("Player already exist, try a different name.");
             }
             await dbContext.Players.AddAsync(newPlayer);
             await dbContext.SaveChangesAsync();

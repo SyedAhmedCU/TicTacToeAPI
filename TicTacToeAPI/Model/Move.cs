@@ -3,7 +3,7 @@
     public class Move
     {
         public Guid Id { get; set; }
-        public string PlayerId { get; set; } = string.Empty;
+        public int PlayerId { get; set; }
         public string GameID { get; set; } = string.Empty;
         public int MoveIndex { get; set; }
     }
