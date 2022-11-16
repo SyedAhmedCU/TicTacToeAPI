@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using TicTacToeAPI.Model;
 
 namespace TicTacToeAPI.Data
 {
@@ -8,5 +9,6 @@ namespace TicTacToeAPI.Data
         {
 
         }
+        public DbSet<Player> Players { get; set; }
     }
 }
