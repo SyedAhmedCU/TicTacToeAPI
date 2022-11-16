@@ -1,4 +1,6 @@
 # TicTacToe
+[![CI](https://github.com/SyedAhmedCU/TicTacToeAPI/actions/workflows/ci.yaml/badge.svg)](https://github.com/SyedAhmedCU/TicTacToeAPI/actions/workflows/ci.yaml)
+
 Creating a .NET 6.0 Web API that provides endpoints for managing games of Tic-Tac-Toe. These endpoints are to take the described inputs as JSON strings and return the described output. The API application needs to be runnable using Docker and Docker Compose. Use the most appropriate verbs for the endpoints. Game data should be managed using Entity Framework and a database of your choice (an in-memory database is fine).
 ## Endpoint 1
 Add an endpoint for starting a game. This endpoint should return a game Id and Ids for the two players.
