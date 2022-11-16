@@ -14,6 +14,7 @@ namespace TicTacToe.UnitTests.Systems.Controllers
         [Fact]
         public async Task Get_OnSuccess_ReturnStatusCode200()
         {
+            //add in memory database context
             var optionsBuilder = new DbContextOptionsBuilder<TicTacToeAPIDbContext>()
                 .UseInMemoryDatabase("GameDb");
             var dbContext = new TicTacToeAPIDbContext(optionsBuilder.Options);
@@ -29,6 +30,7 @@ namespace TicTacToe.UnitTests.Systems.Controllers
         [Fact]
         public async Task Post_OnSuccess_ReturnNewPlayerModel()
         {
+            //add in memory database context
             var optionsBuilder = new DbContextOptionsBuilder<TicTacToeAPIDbContext>()
                 .UseInMemoryDatabase("GameDb");
             var dbContext = new TicTacToeAPIDbContext(optionsBuilder.Options);
@@ -43,6 +45,7 @@ namespace TicTacToe.UnitTests.Systems.Controllers
         [Fact]
         public async Task Post_OnSuccess_ReturnStatusCode400PlayerExist()
         {
+            //add in memory database context
             var optionsBuilder = new DbContextOptionsBuilder<TicTacToeAPIDbContext>()
                 .UseInMemoryDatabase("GameDb");
             var dbContext = new TicTacToeAPIDbContext(optionsBuilder.Options);
