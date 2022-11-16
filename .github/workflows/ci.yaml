@@ -14,3 +14,6 @@ jobs:
  
     - name: dotnet build
       run: dotnet build TicTacToe.sln -c Release
+      
+    - name: dotnet test
+      run: dotnet test TicTacToe.sln -c Release --no-build
