@@ -1,11 +1,9 @@
 using FluentAssertions;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TicTacToeAPI.Controllers;
 using TicTacToeAPI.Data;
 using Xunit;
-using System.Threading.Tasks;
 
 namespace TicTacToeAPI.UnitTests.Systems.Controllers
 {
