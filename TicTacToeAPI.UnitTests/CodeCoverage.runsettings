@@ -18,7 +18,6 @@
                 <ModulePath>.*microsoft.codeanalysis.csharp.dll</ModulePath>
                 <ModulePath>.*microsoft.codeanalysis.dll</ModulePath>
                 <ModulePath>.*microsoft.windowsazure.storage.dll</ModulePath>
-				<!--<ModulePath>Program.cs</ModulePath>-->
               </Exclude>
             </ModulePaths>
           </CodeCoverage>
