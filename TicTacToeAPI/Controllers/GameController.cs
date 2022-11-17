@@ -48,32 +48,33 @@ namespace TicTacToeAPI.Controllers
         /// If both name ids are same, returns bad request 400.
         /// </returns>
         [HttpPost]
-        public async Task<IActionResult> StartGame(string playerX, string playerO)
+        public async Task<IActionResult> StartGame(GamePlayers gamePlayers)
         {
-            var xPlayer = await dbContext.Players.Where(p => p.Name == playerX).FirstOrDefaultAsync();
-            var oPlayer = await dbContext.Players.Where(p => p.Name == playerO).FirstOrDefaultAsync();
+            var xPlayer = await dbContext.Players.Where(p => p.Name == gamePlayers.PlayerX).FirstOrDefaultAsync();
+            var oPlayer = await dbContext.Players.Where(p => p.Name == gamePlayers.PlayerO).FirstOrDefaultAsync();
 
-            if (playerX == playerO)
-                return BadRequest("PlayerX and PlayerO cant be same.");
+            if (gamePlayers.PlayerX == gamePlayers.PlayerO)
+                return BadRequest("PlayerX and PlayerO can't be same.");
+            //add PlayerX and PlayerO if they don't exist database
             if (xPlayer == null)
             {
                 var newPlayer = new Player()
                 {
-                    Name = playerX
+                    Name = gamePlayers.PlayerX
                 };
                 await dbContext.Players.AddAsync(newPlayer);
                 await dbContext.SaveChangesAsync();
-                xPlayer = await dbContext.Players.Where(p => p.Name == playerX).FirstOrDefaultAsync();
+                xPlayer = await dbContext.Players.Where(p => p.Name == gamePlayers.PlayerX).FirstOrDefaultAsync();
             }
             if (oPlayer == null)
             {
                 var newPlayer = new Player()
                 {
-                    Name = playerO
+                    Name = gamePlayers.PlayerO
                 };
                 await dbContext.Players.AddAsync(newPlayer);
                 await dbContext.SaveChangesAsync();
-                oPlayer = await dbContext.Players.Where(p => p.Name == playerO).FirstOrDefaultAsync();
+                oPlayer = await dbContext.Players.Where(p => p.Name == gamePlayers.PlayerO).FirstOrDefaultAsync();
             }
 
             var game = new Game()

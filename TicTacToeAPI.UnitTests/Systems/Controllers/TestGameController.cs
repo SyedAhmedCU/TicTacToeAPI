@@ -35,9 +35,9 @@ namespace TicTacToeAPI.UnitTests.Systems.Controllers
             var dbContext = new TicTacToeAPIDbContext(optionsBuilder.Options);
             //Arrange
             var sut = new GameController(dbContext);
-
+            var gamePlayers = new GamePlayers() { PlayerO = "TestPlayer1", PlayerX = "TestPlayer2" };
             //Act
-            var OkObjectResult = (OkObjectResult)await sut.StartGame("TestPlayer1", "TestPlayer2");
+            var OkObjectResult = (OkObjectResult)await sut.StartGame(gamePlayers);
             //Assert
             OkObjectResult.Value.Should().BeOfType<StartedGame>();
         }
@@ -48,12 +48,16 @@ namespace TicTacToeAPI.UnitTests.Systems.Controllers
             var optionsBuilder = new DbContextOptionsBuilder<TicTacToeAPIDbContext>()
                 .UseInMemoryDatabase("GameDb");
             var dbContext = new TicTacToeAPIDbContext(optionsBuilder.Options);
+
             //Arrange
             var sut = new GameController(dbContext);
             //start a game
-            await sut.StartGame("TestPlayer1", "TestPlayer2");
+            var gamePlayers = new GamePlayers() { PlayerO = "TestPlayer1", PlayerX = "TestPlayer2" };
+            await sut.StartGame(gamePlayers);
+
             //Act
             var OkObjectResult = (OkObjectResult)await sut.GetCurrentGames();
+
             //Assert
             OkObjectResult.Value.Should().BeOfType<List<ActiveGame>>();
         }
@@ -64,15 +68,16 @@ namespace TicTacToeAPI.UnitTests.Systems.Controllers
             var optionsBuilder = new DbContextOptionsBuilder<TicTacToeAPIDbContext>()
                 .UseInMemoryDatabase("GameDb");
             var dbContext = new TicTacToeAPIDbContext(optionsBuilder.Options);
+
             //Arrange
             var sut = new GameController(dbContext);
+            var gamePlayers = new GamePlayers() { PlayerO = "SameTestPlayer", PlayerX = "SameTestPlayer" };
 
             //Act
-            //adding same player should return a bad request 
-            var OkObjectResult = (OkObjectResult)await sut.StartGame("TestPlayer1", "TestPlayer2");
-            var BadRequestObjectResult = (BadRequestObjectResult)await sut.StartGame("SameTestPlayer", "SameTestPlayer");
+            //adding same players should return a bad request 
+            var BadRequestObjectResult = (BadRequestObjectResult)await sut.StartGame(gamePlayers);
+
             //Assert
-            OkObjectResult.Value.Should().BeOfType<StartedGame>();
             BadRequestObjectResult.StatusCode.Should().Be(400);
         }
     }
