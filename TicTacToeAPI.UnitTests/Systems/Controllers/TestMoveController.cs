@@ -37,7 +37,7 @@ namespace TicTacToeAPI.UnitTests.Systems.Controllers
             Assert.Equal("Move is registered successfully!", expectedMessage);
         }
         [Fact]
-        public async Task Post_ExceptionalCase1_ReturnStatusCode400WithErrorMsg()
+        public async Task Post_InvalidGameID_ReturnStatusCode400WithErrorMsg()
         {
             //add in memory database context
             var optionsBuilder = new DbContextOptionsBuilder<TicTacToeAPIDbContext>()
@@ -63,7 +63,7 @@ namespace TicTacToeAPI.UnitTests.Systems.Controllers
             Assert.Equal("No ongoing game was found with the game id. Please use correct game id or start a game.", expectedMessage);
         }
         [Fact]
-        public async Task Post_ExceptionalCase2_ReturnStatusCode400WithErrorMsg()
+        public async Task Post_GameFinsihed_ReturnStatusCode400WithErrorMsg()
         {
             //add in memory database context
             var optionsBuilder = new DbContextOptionsBuilder<TicTacToeAPIDbContext>()
@@ -87,6 +87,32 @@ namespace TicTacToeAPI.UnitTests.Systems.Controllers
             //test message
             var expectedMessage = Assert.IsType<string>(badRequestObjectResult.Value);
             Assert.Equal("No ongoing game was found with the game id. Please use correct game id or start a game.", expectedMessage);
+        }
+        [Fact]
+        public async Task Post_InvalidPlayerNameID_ReturnStatusCode400WithErrorMsg()
+        {
+            //add in memory database context
+            var optionsBuilder = new DbContextOptionsBuilder<TicTacToeAPIDbContext>()
+                .UseInMemoryDatabase("GameDb");
+            var dbContext = new TicTacToeAPIDbContext(optionsBuilder.Options);
+            //Arrange
+            var sut = new MoveController(dbContext);
+            //add a new game
+            var newGame = new Game { Id = Guid.NewGuid(), PlayerX = "TestPlayer1", PlayerO = "TestPlayer2", GameStatus = GameState.ongoing, MoveRegistered = 0 };
+            await dbContext.Games.AddAsync(newGame);
+            await dbContext.SaveChangesAsync();
+
+            //game already finished
+            var newMove = new NewMove() { GameID = newGame.Id.ToString(), MoveIndex = 0, PlayerNameId = "InvalidPlayerID" };
+
+            //Act
+            var badRequestObjectResult = (BadRequestObjectResult)await sut.PostNewMove(newMove);
+
+            //Assert
+            badRequestObjectResult.StatusCode.Should().Be(400);
+            //test message
+            var expectedMessage = Assert.IsType<string>(badRequestObjectResult.Value);
+            Assert.Equal("Player is not in this game.", expectedMessage);
         }
     }
 }
