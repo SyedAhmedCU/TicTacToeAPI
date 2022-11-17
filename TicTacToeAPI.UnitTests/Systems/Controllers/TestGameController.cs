@@ -59,5 +59,23 @@ namespace TicTacToeAPI.UnitTests.Systems.Controllers
             //Assert
             OkObjectResult.Value.Should().BeOfType<List<ActiveGame>>();
         }
+        [Fact]
+        public async Task Post_OnSuccess_ReturnStatusCode400PlayersAreSame()
+        {
+            //add in memory database context
+            var optionsBuilder = new DbContextOptionsBuilder<TicTacToeAPIDbContext>()
+                .UseInMemoryDatabase("GameDb");
+            var dbContext = new TicTacToeAPIDbContext(optionsBuilder.Options);
+            //Arrange
+            var sut = new GameController(dbContext);
+
+            //Act
+            //adding same player should return a bad request 
+            var OkObjectResult = (OkObjectResult)await sut.StartGame("TestPlayer1", "TestPlayer2");
+            var BadRequestObjectResult = (BadRequestObjectResult)await sut.StartGame("SameTestPlayer", "SameTestPlayer");
+            //Assert
+            OkObjectResult.Value.Should().BeOfType<StartedGame>();
+            BadRequestObjectResult.StatusCode.Should().Be(400);
+        }
     }
 }
