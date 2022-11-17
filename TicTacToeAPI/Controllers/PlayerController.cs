@@ -34,20 +34,20 @@ namespace TicTacToeAPI.Controllers
         /// If the player already exist, returns bad request with a string message.
         /// </returns>
         [HttpPost]
-        public async Task<IActionResult> AddPlayer(string name)
+        public async Task<IActionResult> AddPlayer(NewPlayer newPlayer)
         {
-            var newPlayer = new Player()
+            var registerPlayer = new Player()
             {
-                Name = name
+                Name = newPlayer.Name,
             };
-            var nameExist = await dbContext.Players.Where(p => p.Name.ToLower() == name.ToLower()).FirstOrDefaultAsync();
+            var nameExist = await dbContext.Players.Where(p => p.Name.ToLower() == registerPlayer.Name.ToLower()).FirstOrDefaultAsync();
             if (nameExist != null)
             {
                 return BadRequest("Player already exist, try a different name.");
             }
-            await dbContext.Players.AddAsync(newPlayer);
+            await dbContext.Players.AddAsync(registerPlayer);
             await dbContext.SaveChangesAsync();
-            return Ok(newPlayer);
+            return Ok(registerPlayer);
         }
     }
 }

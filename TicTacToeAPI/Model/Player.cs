@@ -1,8 +1,11 @@
 ﻿namespace TicTacToeAPI.Model
 {
-    public class Player
+    public class NewPlayer
     {
-        public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
+    }
+    public class Player : NewPlayer
+    {
+        public Guid Id { get; set; }
     }
 }
