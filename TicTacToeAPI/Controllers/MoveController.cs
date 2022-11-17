@@ -17,7 +17,7 @@ namespace TicTacToeAPI.Controllers
             this.dbContext = dbContext;
         }
         [HttpPost]
-        public async Task<IActionResult> RegisterMove(NewMove newMove)
+        public async Task<IActionResult> PostNewMove(NewMove newMove)
         {
             var gameExist = await dbContext.Games.Where(g => g.Id.ToString() == newMove.GameID && g.GameStatus == GameState.ongoing).FirstOrDefaultAsync();
             // find a game with the game id 
@@ -56,7 +56,7 @@ namespace TicTacToeAPI.Controllers
             gameExist.MoveRegistered = latestMoveCount;
             await dbContext.SaveChangesAsync();
 
-            return Ok(move);
+            return Ok("Move is registered successfully!");
         }
     }
 }
