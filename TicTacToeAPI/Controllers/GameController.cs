@@ -16,5 +16,12 @@ namespace TicTacToeAPI.Controllers
         {
             this.dbContext = dbContext;
         }
+        [HttpGet]
+        public async Task<IActionResult> GetCurrentGames()
+        {
+            var games = await dbContext.Games.Where(g => g.GameStateId == GameState.ongoing).ToListAsync();
+            return Ok(games);
+        }
+
     }
 }
