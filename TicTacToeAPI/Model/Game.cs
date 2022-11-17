@@ -3,9 +3,10 @@
     public class Game
     {
         public Guid Id { get; set; }
-        public int PlayerXId { get; set; }
-        public int PlayerOId { get; set; }
-        public int GameStateId { get; set; } = 0;
+        public string PlayerX { get; set; } = string.Empty;
+        public string PlayerO { get; set; } = string.Empty;
+        public GameState GameStateId { get; set; } = GameState.ongoing;
         public int? MoveRegistered { get; set; } = 0;
     }
+    public enum GameState { ongoing, playerXwin, playerOwin, draw }
 }
