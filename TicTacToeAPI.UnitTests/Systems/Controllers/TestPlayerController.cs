@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TicTacToeAPI.Controllers;
 using TicTacToeAPI.Data;
+using TicTacToeAPI.Model;
 using Xunit;
 
 namespace TicTacToeAPI.UnitTests.Systems.Controllers
@@ -34,11 +35,11 @@ namespace TicTacToeAPI.UnitTests.Systems.Controllers
             var dbContext = new TicTacToeAPIDbContext(optionsBuilder.Options);
             //Arrange
             var sut = new PlayerController(dbContext);
-
+            var testPlayer = new NewPlayer() { Name = "TestPlayer" };
             //Act
-            var OkObjectResult = (OkObjectResult)await sut.AddPlayer("TestPlayer");
+            var OkObjectResult = (OkObjectResult)await sut.AddPlayer(testPlayer);
             //Assert
-            OkObjectResult.Value.Should().BeOfType<Model.Player>();
+            OkObjectResult.Value.Should().BeOfType<Player>();
         }
         [Fact]
         public async Task Post_OnSuccess_ReturnStatusCode400PlayerExist()
@@ -49,13 +50,14 @@ namespace TicTacToeAPI.UnitTests.Systems.Controllers
             var dbContext = new TicTacToeAPIDbContext(optionsBuilder.Options);
             //Arrange
             var sut = new PlayerController(dbContext);
-
+            var testPlayer1 = new NewPlayer() { Name = "SameTestPlayer" };
+            var testPlayer2 = new NewPlayer() { Name = "SameTestPlayer" };
             //Act
             //adding same player should return a bad request 
-            var OkObjectResult = (OkObjectResult)await sut.AddPlayer("SameTestPlayer");
-            var BadRequestObjectResult = (BadRequestObjectResult)await sut.AddPlayer("SameTestPlayer");
+            var OkObjectResult = (OkObjectResult)await sut.AddPlayer(testPlayer1);
+            var BadRequestObjectResult = (BadRequestObjectResult)await sut.AddPlayer(testPlayer2);
             //Assert
-            OkObjectResult.Value.Should().BeOfType<Model.Player>();
+            OkObjectResult.Value.Should().BeOfType<Player>();
             BadRequestObjectResult.StatusCode.Should().Be(400);
         }
     }
