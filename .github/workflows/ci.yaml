@@ -14,12 +14,9 @@ jobs:
  
     - name: dotnet build
       run: dotnet build TicTacToe.sln -c Release
-      
-    - name: dotnet test
-      run: dotnet test TicTacToe.sln -c Release --no-build
     
     - name: Run automated unit and integration tests
-      run: dotnet test -c Release --no-build /p:CollectCoverage=true /p:CoverletOutput="$GITHUB_WORKSPACE/coverage/lcov.info" /p:MergeWith="$GITHUB_WORKSPACE/coverage/lcov.info" /p:CoverletOutputFormat=lcov
+      run: dotnet test -c Release --no-build /p:CollectCoverage=true /p:CoverletOutput="$GITHUB_WORKSPACE/coverage/lcov.info" /p:MergeWith="${{ github.workspace }}/coverage/lcov.info" /p:CoverletOutputFormat=lcov
     
     - name: Publish coverage report to coveralls.io
       uses: coverallsapp/github-action@master
