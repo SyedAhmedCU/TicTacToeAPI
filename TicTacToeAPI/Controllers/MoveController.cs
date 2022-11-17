@@ -37,7 +37,7 @@ namespace TicTacToeAPI.Controllers
                 return BadRequest("Move already registered. Try another.");
 
             //check if the move is outside limit (0-8)
-            if (newMove.MoveIndex < (int)MoveConstraint.firstPlace && newMove.MoveIndex > (int)MoveConstraint.lastPlace)
+            if (newMove.MoveIndex < (int)MoveConstraint.firstPlace || newMove.MoveIndex > (int)MoveConstraint.lastPlace)
                 return BadRequest("Invalid move, choose between 0-8.");
 
             //If the move passes the validation, increase the move count
