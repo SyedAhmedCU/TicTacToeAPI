@@ -22,6 +22,7 @@ namespace TicTacToeAPI.Controllers
             var games = await dbContext.Games.Where(g => g.GameStateId == GameState.ongoing).ToListAsync();
             return Ok(games);
         }
+
         [HttpPost]
         public async Task<IActionResult> StartGame(string playerX, string playerO)
         {
@@ -63,11 +64,11 @@ namespace TicTacToeAPI.Controllers
             await dbContext.SaveChangesAsync();
 
             //show game id and 2 player name id
-            var currentGame = new
+            var currentGame = new StartedGame
             {
-                gameId = game.Id,
-                playerX = game.PlayerX,
-                playerO = game.PlayerO,
+                GameId = game.Id.ToString(),
+                PlayerX = game.PlayerX,
+                PlayerO = game.PlayerO,
             };
             return Ok(currentGame);
         }

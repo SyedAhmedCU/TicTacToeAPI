@@ -6,6 +6,7 @@ using TicTacToeAPI.Controllers;
 using TicTacToeAPI.Data;
 using Xunit;
 using System.Threading.Tasks;
+using TicTacToeAPI.Model;
 
 namespace TicTacToeAPI.UnitTests.Systems.Controllers
 {
@@ -14,7 +15,7 @@ namespace TicTacToeAPI.UnitTests.Systems.Controllers
         [Fact]
         public async Task Get_OnSuccess_ReturnStatusCode200()
         {
-            //add in memory database context
+            //Dependency injection for in memory database context
             var optionsBuilder = new DbContextOptionsBuilder<TicTacToeAPIDbContext>()
                 .UseInMemoryDatabase("GameDb");
             var dbContext = new TicTacToeAPIDbContext(optionsBuilder.Options);
@@ -26,6 +27,21 @@ namespace TicTacToeAPI.UnitTests.Systems.Controllers
 
             //Assert
             result.StatusCode.Should().Be(200);
+        }
+        [Fact]
+        public async Task Post_OnSuccess_ReturnNewGameModel()
+        {
+            //Dependency injection for in memory database context
+            var optionsBuilder = new DbContextOptionsBuilder<TicTacToeAPIDbContext>()
+                .UseInMemoryDatabase("GameDb");
+            var dbContext = new TicTacToeAPIDbContext(optionsBuilder.Options);
+            //Arrange
+            var sut = new GameController(dbContext);
+
+            //Act
+            var OkObjectResult = (OkObjectResult)await sut.StartGame("TestPlayer1", "TestPlayer2");
+            //Assert
+            OkObjectResult.Value.Should().BeOfType<StartedGame>();
         }
     }
 }
