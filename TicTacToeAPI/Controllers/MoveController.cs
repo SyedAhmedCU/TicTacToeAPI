@@ -16,6 +16,11 @@ namespace TicTacToeAPI.Controllers
         {
             this.dbContext = dbContext;
         }
+        /// <summary>
+        /// Takes player's name id, game id and move and store it  
+        /// </summary>
+        /// <param name="newMove"></param>
+        /// <returns>If all validates, returns success response or appropriate errors.</returns>
         [HttpPost]
         public async Task<IActionResult> PostNewMove(NewMove newMove)
         {
