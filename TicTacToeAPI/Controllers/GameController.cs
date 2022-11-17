@@ -20,7 +20,20 @@ namespace TicTacToeAPI.Controllers
         public async Task<IActionResult> GetCurrentGames()
         {
             var games = await dbContext.Games.Where(g => g.GameStateId == GameState.ongoing).ToListAsync();
-            return Ok(games);
+            var activeGames = new List<ActiveGame>();
+            foreach (var game in games)
+            {
+                var activeGame = new ActiveGame()
+                {
+                    GameId = game.Id.ToString(),
+                    PlayerX = game.PlayerX,
+                    PlayerO = game.PlayerO,
+                    GameState = game.GameStateId.ToString(),
+                    MoveRegistered = game.MoveRegistered
+                };
+                activeGames.Add(activeGame);
+            }
+            return Ok(activeGames);
         }
 
         [HttpPost]

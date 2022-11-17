@@ -43,5 +43,21 @@ namespace TicTacToeAPI.UnitTests.Systems.Controllers
             //Assert
             OkObjectResult.Value.Should().BeOfType<StartedGame>();
         }
+        [Fact]
+        public async Task Get_OnSuccess_GetListOfCurrentGames()
+        {
+            //Dependency injection for in memory database context
+            var optionsBuilder = new DbContextOptionsBuilder<TicTacToeAPIDbContext>()
+                .UseInMemoryDatabase("GameDb");
+            var dbContext = new TicTacToeAPIDbContext(optionsBuilder.Options);
+            //Arrange
+            var sut = new GameController(dbContext);
+            //start a game
+            await sut.StartGame("TestPlayer1", "TestPlayer2");
+            //Act
+            var OkObjectResult = (OkObjectResult)await sut.GetCurrentGames();
+            //Assert
+            OkObjectResult.Value.Should().BeOfType<List<ActiveGame>>();
+        }
     }
 }
