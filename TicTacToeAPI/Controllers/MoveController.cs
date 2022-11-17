@@ -22,7 +22,7 @@ namespace TicTacToeAPI.Controllers
             var gameExist = await dbContext.Games.Where(g => g.Id.ToString() == newMove.GameID && g.GameStatus == GameState.ongoing).FirstOrDefaultAsync();
             // find a game with the game id 
             if (gameExist == null)
-                return NotFound("No ongoing game was found with the game id. Please use correct game id or start a game.");
+                return BadRequest("No ongoing game was found with the game id. Please use correct game id or start a game.");
 
             //check if the player is in the game
             var playerX = gameExist.PlayerX;
