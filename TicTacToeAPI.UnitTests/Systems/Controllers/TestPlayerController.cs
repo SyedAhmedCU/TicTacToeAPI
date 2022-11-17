@@ -1,13 +1,11 @@
 using FluentAssertions;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TicTacToeAPI.Controllers;
 using TicTacToeAPI.Data;
 using Xunit;
-using System.Threading.Tasks;
 
-namespace TicTacToe.UnitTests.Systems.Controllers
+namespace TicTacToeAPI.UnitTests.Systems.Controllers
 {
     public class TestPlayerController
     {
@@ -40,7 +38,7 @@ namespace TicTacToe.UnitTests.Systems.Controllers
             //Act
             var OkObjectResult = (OkObjectResult)await sut.AddPlayer("TestPlayer");
             //Assert
-            OkObjectResult.Value.Should().BeOfType<TicTacToeAPI.Model.Player>();
+            OkObjectResult.Value.Should().BeOfType<Model.Player>();
         }
         [Fact]
         public async Task Post_OnSuccess_ReturnStatusCode400PlayerExist()
@@ -57,7 +55,7 @@ namespace TicTacToe.UnitTests.Systems.Controllers
             var OkObjectResult = (OkObjectResult)await sut.AddPlayer("SameTestPlayer");
             var BadRequestObjectResult = (BadRequestObjectResult)await sut.AddPlayer("SameTestPlayer");
             //Assert
-            OkObjectResult.Value.Should().BeOfType<TicTacToeAPI.Model.Player>();
+            OkObjectResult.Value.Should().BeOfType<Model.Player>();
             BadRequestObjectResult.StatusCode.Should().Be(400);
         }
     }
