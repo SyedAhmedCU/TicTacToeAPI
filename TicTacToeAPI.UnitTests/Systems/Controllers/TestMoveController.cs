@@ -29,14 +29,15 @@ namespace TicTacToeAPI.UnitTests.Systems.Controllers
             var newMove = new NewMove() { GameID = newGame.Id.ToString(), MoveIndex = 0, PlayerNameId = "TestPlayer1" };
 
             //Act
-            var result2 = await sut.PostNewMove(newMove);
-            var result = (OkObjectResult)result2;
+            var okObjectResult = (OkObjectResult)await sut.PostNewMove(newMove);
 
             //Assert
-            result.StatusCode.Should().Be(200);
+            okObjectResult.StatusCode.Should().Be(200);
+            var expectedMessage = Assert.IsType<string>(okObjectResult.Value);
+            Assert.Equal("Move is registered successfully!", expectedMessage);
         }
         [Fact]
-        public async Task Post_ExceptionalCase1_ReturnStatusCode400()
+        public async Task Post_ExceptionalCase1_ReturnStatusCode400WithErrorMsg()
         {
             //add in memory database context
             var optionsBuilder = new DbContextOptionsBuilder<TicTacToeAPIDbContext>()
@@ -57,9 +58,12 @@ namespace TicTacToeAPI.UnitTests.Systems.Controllers
 
             //Assert
             badRequestObjectResult.StatusCode.Should().Be(400);
+            //test message
+            var expectedMessage = Assert.IsType<string>(badRequestObjectResult.Value);
+            Assert.Equal("No ongoing game was found with the game id. Please use correct game id or start a game.", expectedMessage);
         }
         [Fact]
-        public async Task Post_ExceptionalCase2_ReturnStatusCode400()
+        public async Task Post_ExceptionalCase2_ReturnStatusCode400WithErrorMsg()
         {
             //add in memory database context
             var optionsBuilder = new DbContextOptionsBuilder<TicTacToeAPIDbContext>()
@@ -80,6 +84,9 @@ namespace TicTacToeAPI.UnitTests.Systems.Controllers
 
             //Assert
             badRequestObjectResult.StatusCode.Should().Be(400);
+            //test message
+            var expectedMessage = Assert.IsType<string>(badRequestObjectResult.Value);
+            Assert.Equal("No ongoing game was found with the game id. Please use correct game id or start a game.", expectedMessage);
         }
     }
 }
