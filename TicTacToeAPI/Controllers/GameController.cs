@@ -11,15 +11,20 @@ namespace TicTacToeAPI.Controllers
     [ApiController]
     public class GameController : ControllerBase
     {
+        //Dependency injection for in memory database context
         private readonly TicTacToeAPIDbContext dbContext;
         public GameController(TicTacToeAPIDbContext dbContext)
         {
             this.dbContext = dbContext;
         }
+        /// <summary>
+        /// using HttpGet method to find the active games from the database context
+        /// </summary>
+        /// <returns> List of active games with their game id, status, the number of moves registered for each and the names of the players.</returns>
         [HttpGet]
         public async Task<IActionResult> GetCurrentGames()
         {
-            var games = await dbContext.Games.Where(g => g.GameStateId == GameState.ongoing).ToListAsync();
+            var games = await dbContext.Games.Where(g => g.GameStatus == GameState.ongoing).ToListAsync();
             var activeGames = new List<ActiveGame>();
             foreach (var game in games)
             {
@@ -28,14 +33,20 @@ namespace TicTacToeAPI.Controllers
                     GameId = game.Id.ToString(),
                     PlayerX = game.PlayerX,
                     PlayerO = game.PlayerO,
-                    GameState = game.GameStateId.ToString(),
+                    GameStatus = game.GameStatus.ToString(),
                     MoveRegistered = game.MoveRegistered
                 };
                 activeGames.Add(activeGame);
             }
             return Ok(activeGames);
         }
-
+        /// <summary>
+        /// Creates a new game object using model and HttpPost method and stores it in memory. 
+        /// Input parameters are the unique name id of player X and player O. 
+        /// </summary>
+        /// <returns> New game id and players name id.
+        /// If both name ids are same, returns bad request 400.
+        /// </returns>
         [HttpPost]
         public async Task<IActionResult> StartGame(string playerX, string playerO)
         {
@@ -70,7 +81,7 @@ namespace TicTacToeAPI.Controllers
                 Id = Guid.NewGuid(),
                 PlayerX = xPlayer.Name,
                 PlayerO = oPlayer.Name,
-                GameStateId = GameState.ongoing,
+                GameStatus = GameState.ongoing,
                 MoveRegistered = 0
             };
             await dbContext.Games.AddAsync(game);

@@ -10,7 +10,7 @@ namespace TicTacToeAPI.Controllers
     [ApiController]
     public class PlayerController : ControllerBase
     {
-        //dependency injection for in memory database context
+        //Dependency injection for in memory database context
         private readonly TicTacToeAPIDbContext dbContext;
         public PlayerController(TicTacToeAPIDbContext dbContext)
         {
