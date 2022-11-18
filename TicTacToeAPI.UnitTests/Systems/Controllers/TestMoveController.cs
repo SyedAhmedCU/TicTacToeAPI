@@ -26,7 +26,7 @@ namespace TicTacToeAPI.UnitTests.Systems.Controllers
             await dbContext.Games.AddAsync(newGame);
             await dbContext.SaveChangesAsync();
 
-            var newMove = new NewMove() { GameID = newGame.Id.ToString(), MoveIndex = 0, PlayerNameId = "TestPlayer1" };
+            var newMove = new NewMove() { GameID = newGame.Id.ToString(), MoveIndex = 5, PlayerNameId = "TestPlayer1" };
 
             //Act
             var okObjectResult = (OkObjectResult)await sut.PostNewMove(newMove);
