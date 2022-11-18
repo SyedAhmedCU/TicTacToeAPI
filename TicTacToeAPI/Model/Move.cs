@@ -19,5 +19,5 @@
     /// 4 9 2 //
     /// A player will win when the sum of the move index is equal to 15 which is the magic constant
     /// </summary>
-    public enum MoveConstraint { firstPlace = 1, lastPlace = 9, magixConstant = 15 }
+    public enum MoveConstraint { firstPlace = 1, lastPlace = 9, magicConstant = 15 }
 }

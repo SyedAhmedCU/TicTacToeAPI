@@ -15,9 +15,9 @@
         public int? MoveRegistered { get; set; } = 0;
     }
     /// <summary>
-    /// GameState enum : ongoing = 0, playerXwin = 1, playerOwin = 2, draw=3
+    /// GameState enum : ongoing = 0, win = 1, draw=2
     /// </summary>
-    public enum GameState { ongoing, playerXwin, playerOwin, draw }
+    public enum GameState { ongoing, win, draw }
 
       /// <summary>
     /// Class for showing newly started game with player name and game id
