@@ -5,6 +5,9 @@
         public string PlayerX { get; set; } = string.Empty;
         public string PlayerO { get; set; } = string.Empty;
     }
+    /// <summary>
+    /// This class is to store game information in database
+    /// </summary>
     public class Game : GamePlayers
     {
         public Guid Id { get; set; }
@@ -16,7 +19,7 @@
     /// </summary>
     public enum GameState { ongoing, playerXwin, playerOwin, draw }
 
-    /// <summary>
+      /// <summary>
     /// Class for showing newly started game with player name and game id
     /// </summary>
     public class StartedGame  : GamePlayers
