@@ -160,9 +160,9 @@ namespace TicTacToeAPI.UnitTests.Systems.Controllers
             await dbContext.Games.AddAsync(newGame);
             await dbContext.SaveChangesAsync();
 
-            //move index 0-8 is valid
-            var moveInvalid1 = new NewMove() { GameID = newGame.Id.ToString(), MoveIndex = -1, PlayerNameId = "TestPlayer1" };
-            var moveInvalid2 = new NewMove() { GameID = newGame.Id.ToString(), MoveIndex = 9, PlayerNameId = "TestPlayer2" };
+            //move index 1-9 is valid
+            var moveInvalid1 = new NewMove() { GameID = newGame.Id.ToString(), MoveIndex = 0, PlayerNameId = "TestPlayer1" };
+            var moveInvalid2 = new NewMove() { GameID = newGame.Id.ToString(), MoveIndex = 10, PlayerNameId = "TestPlayer2" };
             var moveValid = new NewMove() { GameID = newGame.Id.ToString(), MoveIndex = 5, PlayerNameId = "TestPlayer1" };
 
             //Act
@@ -177,8 +177,8 @@ namespace TicTacToeAPI.UnitTests.Systems.Controllers
             //test messaged
             var expectedMessage1 = Assert.IsType<string>(badRequestObjectResult1.Value);
             var expectedMessage2 = Assert.IsType<string>(badRequestObjectResult2.Value);
-            Assert.Equal("Invalid move, choose between 0-8.", expectedMessage1);
-            Assert.Equal("Invalid move, choose between 0-8.", expectedMessage2);
+            Assert.Equal("Invalid move, choose between 1-9.", expectedMessage1);
+            Assert.Equal("Invalid move, choose between 1-9.", expectedMessage2);
         }
     }
 }
