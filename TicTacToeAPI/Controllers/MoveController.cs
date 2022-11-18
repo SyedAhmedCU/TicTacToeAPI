@@ -73,7 +73,7 @@ namespace TicTacToeAPI.Controllers
                 await dbContext.SaveChangesAsync();
                 return Ok(currentPlayer + " wins the game!");
             }
-            else if (latestMoveCount >= 8 || checkMoves.Count() == 3)
+            else if (latestMoveCount >= (int)MoveConstraint.maxMoves || checkMoves.Count() > 3)
             {
                 gameExist.GameStatus = GameState.draw;
                 await dbContext.SaveChangesAsync();
