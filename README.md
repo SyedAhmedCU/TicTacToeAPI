@@ -161,3 +161,7 @@ request body format: ```{ "playerNameId": "string", "gameID": "string", "moveInd
 <img src="https://user-images.githubusercontent.com/55814513/202830331-e9747f7f-ed19-466f-b7d1-5c3a4d84b1c9.png" alt="Start Game API POST Postman" width="45%" /> <img src="https://user-images.githubusercontent.com/55814513/202830404-b53b7b74-b941-43e2-a738-bc2b8162d583.png" alt="Register Player Move API POST Postman" width="49%" />
 
 ### What is the appropriate OAuth 2/OIDC grant to use for a web application using a SPA (Single Page Application) and why.
+Previously single-page apps commonly used Implicit Grant flow to receive access token in the redirect. Now it is strongly recommended not to use this grant anymore. The reason is single-page apps run in the client side or browser which first load the JavaScript and HTML source code from a web page. So, they cannot maintain client secret confidentiality. <br>
+For this reason, “proof key for code exchange”, in short PKCE which is an extension for the Authorization Code grant flow is the best recommended way to protect the authorization code. It helps to prevent Cross-site request forgery (CSRF) and authorization code injection attacks.
+Source: [1](https://learn.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-implicit-grant-flow), [2](https://oauth.net/2/pkce/), [3](https://medium.com/@robert.broeckelmann/when-to-use-which-oauth2-grants-and-oidc-flows-ec6a5c00d864)
+
