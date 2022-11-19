@@ -80,7 +80,7 @@ namespace TicTacToeAPI.Controllers
             //If the move passes the validation, increase the move count
             int? latestMoveCount = gameExist.MoveRegistered + 1;
 
-            var move = new Move()
+            Move move = new()
             {
                 Id = Guid.NewGuid(),
                 GameId = newMove.GameId,
