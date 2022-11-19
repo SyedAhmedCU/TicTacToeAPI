@@ -38,6 +38,7 @@ namespace TicTacToeAPI.Controllers
         {
             var registerPlayer = new Player()
             {
+                Id = Guid.NewGuid(),
                 Name = newPlayer.Name,
             };
             var nameExist = await dbContext.Players.Where(p => p.Name.ToLower() == registerPlayer.Name.ToLower()).FirstOrDefaultAsync();
