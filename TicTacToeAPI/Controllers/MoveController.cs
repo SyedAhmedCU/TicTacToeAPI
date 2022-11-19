@@ -63,6 +63,15 @@ namespace TicTacToeAPI.Controllers
             if (currentPlayer.ToLower() != playerX.ToLower() && currentPlayer.ToLower() != playerO.ToLower())
                 return BadRequest("Player is not in this game.");
 
+            //check if current player registered the last move
+            if (gameExist.MoveRegistered != 0)
+            {
+                //get the last move registered for current game
+                var allMoves = await dbContext.Moves.Where(m => m.GameId == newMove.GameId).LastAsync();
+                if(allMoves.PlayerNameId.ToLower() == currentPlayer.ToLower())
+                    return BadRequest(currentPlayer + " already made the last move.");
+            }
+                
             //check if the move is available or already registered
             var moveExist = await dbContext.Moves.Where(g => g.GameId.ToString() == newMove.GameId && g.MoveIndex == newMove.MoveIndex).FirstOrDefaultAsync();
             if (moveExist != null)
