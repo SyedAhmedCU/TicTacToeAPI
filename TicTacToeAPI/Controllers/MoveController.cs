@@ -30,23 +30,23 @@ namespace TicTacToeAPI.Controllers
                 return BadRequest("No ongoing game was found with the game id. Please use correct game id or start a game.");
 
             //check if the player is in the game
-            var playerX = gameExist.PlayerX;
-            var playerO = gameExist.PlayerO;
-            var currentPlayer = newMove.PlayerNameId;
+            string playerX = gameExist.PlayerX;
+            string playerO = gameExist.PlayerO;
+            string currentPlayer = newMove.PlayerNameId;
             if (currentPlayer != playerX && currentPlayer != playerO)
                 return BadRequest("Player is not in this game.");
+
+            //check if the move is outside the limit (1-9)
+            if (newMove.MoveIndex < (int)MoveConstraint.firstPlace || newMove.MoveIndex > (int)MoveConstraint.lastPlace)
+                return BadRequest("Invalid move, choose between 1-9.");
 
             //check if the move is available or already registered
             var moveExist = await dbContext.Moves.Where(g => g.GameID.ToString() == newMove.GameID && g.MoveIndex == newMove.MoveIndex).FirstOrDefaultAsync();
             if (moveExist != null)
                 return BadRequest("Move already registered. Try another.");
 
-            //check if the move is outside the limit (1-9)
-            if (newMove.MoveIndex < (int)MoveConstraint.firstPlace || newMove.MoveIndex > (int)MoveConstraint.lastPlace)
-                return BadRequest("Invalid move, choose between 1-9.");
-
             //If the move passes the validation, increase the move count
-            var latestMoveCount = gameExist.MoveRegistered + 1;
+            int? latestMoveCount = gameExist.MoveRegistered + 1;
 
             var move = new Move()
             {
@@ -67,7 +67,7 @@ namespace TicTacToeAPI.Controllers
             if (checkMoves.Count() == 3)
                 currentPlayerWin = GameLogic(checkMoves);
 
-            if (currentPlayerWin == true)
+            if (currentPlayerWin)
             {
                 gameExist.GameStatus = GameState.win;
                 await dbContext.SaveChangesAsync();

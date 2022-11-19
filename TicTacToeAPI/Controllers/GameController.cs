@@ -25,10 +25,10 @@ namespace TicTacToeAPI.Controllers
         public async Task<IActionResult> GetCurrentGames()
         {
             var games = await dbContext.Games.Where(g => g.GameStatus == GameState.ongoing).ToListAsync();
-            var activeGames = new List<ActiveGame>();
+            List<ActiveGame> activeGames = new();
             foreach (var game in games)
             {
-                var activeGame = new ActiveGame()
+                ActiveGame activeGame = new()
                 {
                     GameId = game.Id.ToString(),
                     PlayerX = game.PlayerX,
@@ -58,7 +58,7 @@ namespace TicTacToeAPI.Controllers
             //add PlayerX and PlayerO if they don't exist database
             if (xPlayer == null)
             {
-                var newPlayer = new Player()
+                Player newPlayer = new()
                 {
                     Name = gamePlayers.PlayerX
                 };
@@ -68,7 +68,7 @@ namespace TicTacToeAPI.Controllers
             }
             if (oPlayer == null)
             {
-                var newPlayer = new Player()
+                Player newPlayer = new()
                 {
                     Name = gamePlayers.PlayerO
                 };
@@ -77,7 +77,7 @@ namespace TicTacToeAPI.Controllers
                 oPlayer = await dbContext.Players.Where(p => p.Name == gamePlayers.PlayerO).FirstOrDefaultAsync();
             }
 
-            var game = new Game()
+            Game game = new()
             {
                 Id = Guid.NewGuid(),
                 PlayerX = xPlayer.Name,
@@ -89,13 +89,13 @@ namespace TicTacToeAPI.Controllers
             await dbContext.SaveChangesAsync();
 
             //show game id and 2 player name id
-            var currentGame = new StartedGame
+            StartedGame startedGame = new()
             {
                 GameId = game.Id.ToString(),
                 PlayerX = game.PlayerX,
                 PlayerO = game.PlayerO,
             };
-            return Ok(currentGame);
+            return Ok(startedGame);
         }
     }
 }

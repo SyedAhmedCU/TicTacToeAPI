@@ -36,7 +36,7 @@ namespace TicTacToeAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> AddPlayer(NewPlayer newPlayer)
         {
-            var registerPlayer = new Player()
+            Player registerPlayer = new()
             {
                 Id = Guid.NewGuid(),
                 Name = newPlayer.Name,
