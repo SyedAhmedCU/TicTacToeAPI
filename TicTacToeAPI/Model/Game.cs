@@ -1,8 +1,15 @@
-﻿namespace TicTacToeAPI.Model
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace TicTacToeAPI.Model
 {
+    /// <summary>
+    /// This class is used as a input for the StartGame() method
+    /// </summary>
     public class GamePlayers
     {
+        [Required]
         public string PlayerX { get; set; } = string.Empty;
+        [Required]
         public string PlayerO { get; set; } = string.Empty;
     }
     /// <summary>
@@ -14,17 +21,12 @@
         public GameState GameStatus { get; set; } = GameState.ongoing;
         public int? MoveRegistered { get; set; } = 0;
     }
-    /// <summary>
-    /// GameState enum : ongoing = 0, win = 1, draw=2
-    /// </summary>
-    public enum GameState { ongoing, win, draw }
-
       /// <summary>
     /// Class for showing newly started game with player name and game id
     /// </summary>
     public class StartedGame  : GamePlayers
     {
-       public string GameId { get; set; } = string.Empty;
+        public string GameId { get; set; } = string.Empty;
     }
     /// <summary>
     /// Class for showing list of running games includes game id, status, players and mode registerd for each

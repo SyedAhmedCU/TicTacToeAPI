@@ -19,16 +19,16 @@ namespace TicTacToeAPI.Data
                     var players = new List<Player>()
                     {
                         new Player {
-                            Name = "Michael"
+                            NameId = "Michael"
                         },
                         new Player {
-                            Name = "Toby"
+                            NameId = "Toby"
                         },
                         new Player {
-                            Name = "Pam"
+                            NameId = "Pam"
                         },
                         new Player {
-                            Name = "Jim"
+                            NameId = "Jim"
                         }
                     };
                     gameContext.Players.AddRange(players);

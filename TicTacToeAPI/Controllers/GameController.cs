@@ -18,17 +18,39 @@ namespace TicTacToeAPI.Controllers
             this.dbContext = dbContext;
         }
         /// <summary>
-        /// using HttpGet method to find the active games from the database context
+        /// Get a list of running games
         /// </summary>
+        /// <remarks>
+        ///     
+        /// Sample response:
+        /// 
+        ///     [
+        ///         {
+        ///             "gameStatus": "ongoing",
+        ///             "moveRegistered": 0,
+        ///             "gameId": "fdb21950-f250-4886-aa20-0ca6b0da6850",
+        ///             "playerX": "Pam",
+        ///             "playerO": "Jim"
+        ///         },
+        ///         {
+        ///             "gameStatus": "ongoing",
+        ///             "moveRegistered": 0,
+        ///             "gameId": "161d4d24-da3a-4701-bcd6-5147c8b708fb",
+        ///             "playerX": "Michael",
+        ///             "playerO": "Toby"
+        ///         }
+        ///     ]
+        /// 
+        /// </remarks>
         /// <returns> List of active games with their game id, status, the number of moves registered for each and the names of the players.</returns>
         [HttpGet]
         public async Task<IActionResult> GetCurrentGames()
         {
             var games = await dbContext.Games.Where(g => g.GameStatus == GameState.ongoing).ToListAsync();
-            var activeGames = new List<ActiveGame>();
+            List<ActiveGame> activeGames = new();
             foreach (var game in games)
             {
-                var activeGame = new ActiveGame()
+                ActiveGame activeGame = new()
                 {
                     GameId = game.Id.ToString(),
                     PlayerX = game.PlayerX,
@@ -41,47 +63,64 @@ namespace TicTacToeAPI.Controllers
             return Ok(activeGames);
         }
         /// <summary>
-        /// Creates a new game object using model and HttpPost method and stores it in memory. 
-        /// Input parameters are the unique name id of player X and player O. 
+        /// Start a new game 
         /// </summary>
-        /// <returns> New game id and players name id.
-        /// If both name ids are same, returns bad request 400.
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /Game
+        ///     {
+        ///         "playerX": "Ryan",
+        ///         "playerO": "Kelly"
+        ///     }
+        ///
+        /// Sample response:
+        ///
+        ///     {
+        ///         "gameId": "de905ed5-8742-437d-9e1a-f7aa7c4ad01d",
+        ///         "playerX": "Ryan",
+        ///         "playerO": "Kelly"
+        ///     }
+        ///
+        /// </remarks>
+        /// <returns> New gameId and players nameId.
+        /// If both nameIds are same, returns bad request status code 400.
         /// </returns>
         [HttpPost]
         public async Task<IActionResult> StartGame(GamePlayers gamePlayers)
         {
-            var xPlayer = await dbContext.Players.Where(p => p.Name == gamePlayers.PlayerX).FirstOrDefaultAsync();
-            var oPlayer = await dbContext.Players.Where(p => p.Name == gamePlayers.PlayerO).FirstOrDefaultAsync();
+            var xPlayer = await dbContext.Players.Where(p => p.NameId.ToLower() == gamePlayers.PlayerX.ToLower()).FirstOrDefaultAsync();
+            var oPlayer = await dbContext.Players.Where(p => p.NameId.ToLower() == gamePlayers.PlayerO.ToLower()).FirstOrDefaultAsync();
 
             if (gamePlayers.PlayerX == gamePlayers.PlayerO)
                 return BadRequest("PlayerX and PlayerO can't be same.");
             //add PlayerX and PlayerO if they don't exist database
             if (xPlayer == null)
             {
-                var newPlayer = new Player()
+                Player newPlayer = new()
                 {
-                    Name = gamePlayers.PlayerX
+                    NameId = gamePlayers.PlayerX
                 };
                 await dbContext.Players.AddAsync(newPlayer);
                 await dbContext.SaveChangesAsync();
-                xPlayer = await dbContext.Players.Where(p => p.Name == gamePlayers.PlayerX).FirstOrDefaultAsync();
+                xPlayer = await dbContext.Players.Where(p => p.NameId.ToLower() == gamePlayers.PlayerX.ToLower()).FirstOrDefaultAsync();
             }
             if (oPlayer == null)
             {
-                var newPlayer = new Player()
+                Player newPlayer = new()
                 {
-                    Name = gamePlayers.PlayerO
+                    NameId = gamePlayers.PlayerO
                 };
                 await dbContext.Players.AddAsync(newPlayer);
                 await dbContext.SaveChangesAsync();
-                oPlayer = await dbContext.Players.Where(p => p.Name == gamePlayers.PlayerO).FirstOrDefaultAsync();
+                oPlayer = await dbContext.Players.Where(p => p.NameId.ToLower() == gamePlayers.PlayerO.ToLower()).FirstOrDefaultAsync();
             }
 
-            var game = new Game()
+            Game game = new()
             {
                 Id = Guid.NewGuid(),
-                PlayerX = xPlayer.Name,
-                PlayerO = oPlayer.Name,
+                PlayerX = xPlayer.NameId,
+                PlayerO = oPlayer.NameId,
                 GameStatus = GameState.ongoing,
                 MoveRegistered = 0
             };
@@ -89,13 +128,13 @@ namespace TicTacToeAPI.Controllers
             await dbContext.SaveChangesAsync();
 
             //show game id and 2 player name id
-            var currentGame = new StartedGame
+            StartedGame startedGame = new()
             {
                 GameId = game.Id.ToString(),
                 PlayerX = game.PlayerX,
                 PlayerO = game.PlayerO,
             };
-            return Ok(currentGame);
+            return Ok(startedGame);
         }
     }
 }

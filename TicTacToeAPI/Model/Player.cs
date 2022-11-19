@@ -1,8 +1,14 @@
-﻿namespace TicTacToeAPI.Model
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace TicTacToeAPI.Model
 {
+    /// <summary>
+    /// This class is used as a input for the AddPlayer() method
+    /// </summary>
     public class NewPlayer
     {
-        public string Name { get; set; } = string.Empty;
+        [Required]
+        public string NameId { get; set; } = string.Empty;
     }
     public class Player : NewPlayer
     {

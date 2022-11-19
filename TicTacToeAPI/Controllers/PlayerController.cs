@@ -17,9 +17,25 @@ namespace TicTacToeAPI.Controllers
             this.dbContext = dbContext;
         }
         /// <summary>
-        /// Returns list of players from the database context using HttpGet method
+        /// Get a list of players
         /// </summary>
-        /// <returns> List of Players with their id and names</returns>
+        /// /// <remarks>
+        ///     
+        /// Sample response:
+        /// 
+        ///     [
+        ///         {
+        ///             "id": "c19233b7-a52a-494c-9b2e-a9d28d1dfaabb",
+        ///             "nameId": "Michael"
+        ///         },
+        ///         {
+        ///             "id": "14aecbd3-6206-4862-be08-1b22ceabe4a5",
+        ///             "nameId": "Toby"
+        ///         }
+        ///     ]
+        /// 
+        /// </remarks>
+        /// <returns> List of players with their ids and nameIds.</returns>
         [HttpGet]
         public async Task<IActionResult> GetAllPlayers()
         {
@@ -27,21 +43,36 @@ namespace TicTacToeAPI.Controllers
             return Ok(players);
         }
         /// <summary>
-        /// Creates a player object similar to Player model using HttpPost method. 
-        /// Input parameter is the name.
+        /// Add a player 
         /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /Game
+        ///     {
+        ///         "nameId": "Oscar"
+        ///     }
+        ///
+        /// Sample response:
+        ///
+        ///     {
+        ///         "id": "e71b0cdc-d0f4-4123-8fa9-bd05b7614207",
+        ///         "nameId": "Oscar"
+        ///     }
+        ///
+        /// </remarks>
         /// <returns> Newly added player object with id and name.
         /// If the player already exist, returns bad request with a string message.
         /// </returns>
         [HttpPost]
         public async Task<IActionResult> AddPlayer(NewPlayer newPlayer)
         {
-            var registerPlayer = new Player()
+            Player registerPlayer = new()
             {
                 Id = Guid.NewGuid(),
-                Name = newPlayer.Name,
+                NameId = newPlayer.NameId,
             };
-            var nameExist = await dbContext.Players.Where(p => p.Name.ToLower() == registerPlayer.Name.ToLower()).FirstOrDefaultAsync();
+            var nameExist = await dbContext.Players.Where(p => p.NameId.ToLower() == registerPlayer.NameId.ToLower()).FirstOrDefaultAsync();
             if (nameExist != null)
             {
                 return BadRequest("Player already exist, try a different name.");
