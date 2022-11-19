@@ -1,4 +1,4 @@
-# TicTacToe
+# Tic Tac Toe Web API
 [![CI](https://github.com/SyedAhmedCU/TicTacToeAPI/actions/workflows/ci.yaml/badge.svg?&service=github)](https://github.com/SyedAhmedCU/TicTacToeAPI/actions/workflows/ci.yaml)
 [![Coverage Status](https://coveralls.io/repos/github/SyedAhmedCU/TicTacToeAPI/badge.svg?branch=main&kill_cache=1)](https://coveralls.io/github/SyedAhmedCU/TicTacToeAPI?branch=main)
 
@@ -102,7 +102,7 @@ This endpoint is for retrieving all players with nameId and Id (guid).
 ]
 ```
 ### Endpont 6 `POST /api/Player`
-This endpoint is for adding a new player with just a name. It will create an id (Guid). Name is used as an unique id, so if the player name already exist, it will return a satus code 400 with error message.
+This endpoint is for adding a new player with just a name. It will create an id (Guid). Name is used as a unique id, so if the player name already exist in database, it will return a status code 400 with error message.
 - Sample request: NewPlayer JSON
 ```JSON
 {
@@ -132,10 +132,12 @@ This endpoint is for adding a new player with just a name. It will create an id 
 ```sh
 $ git clone https://github.com/SyedAhmedCU/TicTacToeAPI.git .
 ```
+- Use `dotnet run` from the terminal or use visual Studio 2022 to build and run the solution
+- If everything executes successfully, the browser will open in Swagger UI
 
 ### Build Docker Image
 - Install [Docker](https://www.docker.com/) on desktop
-- To build Docker image, open git bash terminal from the root directory where the docker file is located and run the follwoing command
+- To build Docker image, open git bash terminal from the root directory where the docker file is located and run the following command
 ```sh
 $ docker build --rm -t syed-ahmed/tic-tac-toe-api:latest .
 ```
@@ -157,3 +159,5 @@ Request body format: ```{ "playerX": "string", "playerO": "string" }```
 request body format: ```{ "playerNameId": "string", "gameID": "string", "moveIndex": int }```
 
 <img src="https://user-images.githubusercontent.com/55814513/202830331-e9747f7f-ed19-466f-b7d1-5c3a4d84b1c9.png" alt="Start Game API POST Postman" width="45%" /> <img src="https://user-images.githubusercontent.com/55814513/202830404-b53b7b74-b941-43e2-a738-bc2b8162d583.png" alt="Register Player Move API POST Postman" width="49%" />
+
+### What is the appropriate OAuth 2/OIDC grant to use for a web application using a SPA (Single Page Application) and why.
