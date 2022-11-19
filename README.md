@@ -13,4 +13,4 @@ Add an endpoint for retrieving a list of currently running games including the n
 ## Game Logic Using Magic Square
 <img src="https://user-images.githubusercontent.com/55814513/202608065-e682080f-6fd9-4b0c-8d29-08d0e2f324e0.png" alt="Magic Square" width="200px" /> <br>
 - A magic square is a square array of numbers consisting of the distinct positive integers 1, 2, ..., n^2 arranged such that the sum of the n numbers in any horizontal, vertical, or main diagonal line is always the same number known as the magic constant. Source: <a href="https://mathworld.wolfram.com/MagicSquare.html">Wolfram Mathworld</a> <br>
-- This can be applied to Tictactoe which has a 3x3 grid, every grid can has a positive integer from 1-9. Using Magic square, a player will win when the sum of the move index is equal to 15.
+- The game has a 3x3 grid with 9 possible moves. Each move has an index number from 1-9. These are arranged according to the magic square. So, sum of 3 numbers joining horizontal, vertical, or main diagonal line is the magic constant which is 15 for this case. A player will win when the sum of his moves is equal to 15.
