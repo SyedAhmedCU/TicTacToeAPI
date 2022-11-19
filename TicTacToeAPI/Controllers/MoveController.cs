@@ -17,6 +17,18 @@ namespace TicTacToeAPI.Controllers
             this.dbContext = dbContext;
         }
         /// <summary>
+        /// Get a list of all registered moves
+        /// </summary>
+        /// <returns> List of registered moves with all details.</returns>
+        [HttpGet]
+        public async Task<IActionResult> GetAllMoves()
+        {
+            var moves = await dbContext.Moves.ToListAsync();
+            if(!moves.Any())
+                return NotFound();
+            return Ok(moves);
+        }
+        /// <summary>
         /// Register a new move for a player in a game  
         /// </summary>
         /// <remarks>

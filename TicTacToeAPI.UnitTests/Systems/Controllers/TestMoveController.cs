@@ -10,8 +10,33 @@ using Xunit;
 
 namespace TicTacToeAPI.UnitTests.Systems.Controllers
 {
-    public class MovePlayerController
+    public class TestMoveController
     {
+        [Fact]
+        public async Task Get_OnSeccess_ReturnStatusCode200()
+        {
+            //add in memory database context
+            var optionsBuilder = new DbContextOptionsBuilder<TicTacToeAPIDbContext>()
+                .UseInMemoryDatabase("GameDb");
+            var dbContext = new TicTacToeAPIDbContext(optionsBuilder.Options);
+
+            //Arrange
+            var sut = new MoveController(dbContext);
+            //Add a game
+            var newGame = new Game { Id = Guid.NewGuid(), PlayerX = "TestPlayer1", PlayerO = "TestPlayer2", GameStatus = GameState.ongoing, MoveRegistered = 0 };
+            await dbContext.Games.AddAsync(newGame);
+            await dbContext.SaveChangesAsync();
+            //Add a move
+            var newMove = new Move() { Id = Guid.NewGuid(), GameId = newGame.Id.ToString(), MoveIndex = 5, PlayerNameId = "TestPlayer1" };
+            await dbContext.Moves.AddAsync(newMove);
+            await dbContext.SaveChangesAsync();
+
+            //Act
+            var result = (OkObjectResult)await sut.GetAllMoves();
+
+            //Assert
+            result.StatusCode.Should().Be(200);
+        }
         [Fact]
         public async Task Post_OnSuccess_ReturnStatusCode200()
         {
