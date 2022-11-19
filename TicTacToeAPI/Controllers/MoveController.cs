@@ -17,8 +17,23 @@ namespace TicTacToeAPI.Controllers
             this.dbContext = dbContext;
         }
         /// <summary>
-        /// Takes player's name id, game id and move and store it  
+        /// Register a new move for a player in a game  
         /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /Move
+        ///     {
+        ///         "playerNameId": "Jim",
+        ///         "gameId": "fdb21950-f250-4886-aa20-0ca6b0da6850", //replaced with new game id 
+        ///         "moveIndex": 5
+        ///     }
+        ///
+        /// Sample response:
+        ///
+        ///     Jim's move is registered successfully!
+        ///
+        /// </remarks>
         /// <param name="newMove"></param>
         /// <returns>If all validates, returns success response or appropriate errors.</returns>
         [HttpPost]
@@ -77,7 +92,7 @@ namespace TicTacToeAPI.Controllers
             }
             else
             {
-                return Ok("Move is registered successfully!");
+                return Ok(currentPlayer + "'s move is registered successfully!");
             }
         }
         /// <summary>
