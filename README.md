@@ -1,6 +1,6 @@
 # TicTacToe
 [![CI](https://github.com/SyedAhmedCU/TicTacToeAPI/actions/workflows/ci.yaml/badge.svg?&service=github)](https://github.com/SyedAhmedCU/TicTacToeAPI/actions/workflows/ci.yaml)
-[![Coverage Status](https://coveralls.io/repos/github/SyedAhmedCU/TicTacToeAPI/badge.svg?branch=main)](https://coveralls.io/github/SyedAhmedCU/TicTacToeAPI?branch=main)
+[![Coverage Status](https://coveralls.io/repos/github/SyedAhmedCU/TicTacToeAPI/badge.svg?branch=main&kill_cache=1)](https://coveralls.io/github/SyedAhmedCU/TicTacToeAPI?branch=main)
 
 Creating a .NET 6.0 Web API that provides endpoints for managing games of Tic-Tac-Toe. These endpoints are to take the described inputs as JSON and return the described output. The API application is runnable using Docker and Docker Compose. Game data is managed using Entity Framework and in-memory database.
 ### Endpoint 1
