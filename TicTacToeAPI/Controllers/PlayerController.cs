@@ -17,7 +17,7 @@ namespace TicTacToeAPI.Controllers
             this.dbContext = dbContext;
         }
         /// <summary>
-        /// Get list a of players
+        /// Get a list of players
         /// </summary>
         /// /// <remarks>
         ///     

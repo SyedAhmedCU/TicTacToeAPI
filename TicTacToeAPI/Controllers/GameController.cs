@@ -18,7 +18,7 @@ namespace TicTacToeAPI.Controllers
             this.dbContext = dbContext;
         }
         /// <summary>
-        /// Get a list of currently running games
+        /// Get a list of running games
         /// </summary>
         /// <remarks>
         ///     
