@@ -3,12 +3,79 @@
 [![Coverage Status](https://coveralls.io/repos/github/SyedAhmedCU/TicTacToeAPI/badge.svg?branch=main&kill_cache=1)](https://coveralls.io/github/SyedAhmedCU/TicTacToeAPI?branch=main)
 
 Creating a .NET 6.0 Web API that provides endpoints for managing games of Tic-Tac-Toe. These endpoints are to take the described inputs as JSON and return the described output. The API application is runnable using Docker and Docker Compose. Game data is managed using Entity Framework and in-memory database.
-### Endpoint 1
-Add an endpoint for starting a game. This endpoint should return a game Id and Ids for the two players.
-### Endpoint 2
-Add an endpoint for registering a player move. This endpoint should take the player Id and return a success response or appropriate errors. It should also notify the caller if the current move wins the game.
-### Endpoint 3
-Add an endpoint for retrieving a list of currently running games including the number of moves registered for each and the names of the players.
+
+## Overview
+
+|API | Description | Request body | Response body |
+|--- | ---- | ---- | ---- |
+|`GET /api/Game` | Get all running games | None | JSON array of ActiveGame blocks|
+|`POST /api/Game` | Start a new game | GamePlayer JSON | A StartedGame JSON block|
+|`GET /api/Move` | Get all moves | None | JSON array of Move blocks|
+|`POST /api/Move` | Register a move | NewMove JSON | Success message |
+|`GET /api/Player` | Get all players | None | JSON array of Player blocks |
+|`POST /api/Player` | Add a new player | NewPlayer JSON | A Player JSON block |
+
+### Endpoint 1 `POST /api/Game`
+This endpoint is for starting a game. This endpoint returns a new game Id (Guid) and name Ids for the two players.
+- Sample request: GamePlayer JSON
+```JSON
+{
+    "playerX": "Ryan",
+    "playerO": "Kelly"
+}
+```
+- Sample response: StartedGame JSON block
+```Json
+{
+    "gameId": "de905ed5-8742-437d-9e1a-f7aa7c4ad01d",
+    "playerX": "Ryan",
+    "playerO": "Kelly"
+}
+```
+### Endpoint 2 `POST /api/Move`
+This endpoint is for registering a player move. This endpoint takes the player Id, game id, and move index (0-9) and return a success response or appropriate errors. It also notifies the caller if the current move wins the game or if it's a draw.
+- Sample request: NewMove JSON 
+```JSON
+{
+    "playerNameId": "Jim",
+    "gameId": "fdb21950-f250-4886-aa20-0ca6b0da6850",
+    "moveIndex": 5
+}
+```
+- Sample response: Success message
+```JSON
+"Jim's move is registered successfully!"
+```
+### Endpoint 3 `GET /api/Game`
+This endpoint is for retrieving a list of currently running games including the number of moves registered for each and the names of the players.
+- Sample response: JSON array of ActiveGame blocks
+```JSON
+[
+    {
+        "gameStatus": "ongoing",
+        "moveRegistered": 0,
+        "gameId": "fdb21950-f250-4886-aa20-0ca6b0da6850",
+        "playerX": "Pam",
+        "playerO": "Jim"
+    },
+    {
+        "gameStatus": "ongoing",
+        "moveRegistered": 0,
+        "gameId": "161d4d24-da3a-4701-bcd6-5147c8b708fb",
+        "playerX": "Michael",
+        "playerO": "Toby"
+    }
+]
+````
+### Endpoint 4
+
+### Endpoint 5
+
+### Endpont 6
+
+
+### In-memory database ERD
+<img src="https://user-images.githubusercontent.com/55814513/202872060-03d5fba5-a24e-45f1-b558-2fd63ee8785b.png" alt="ERD of tictactoe Api" width="600px" /> <br>
 
 ## Game Logic Using Magic Square
 <img src="https://user-images.githubusercontent.com/55814513/202608065-e682080f-6fd9-4b0c-8d29-08d0e2f324e0.png" alt="Magic Square" width="200px" /> <br>
