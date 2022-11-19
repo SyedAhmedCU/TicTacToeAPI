@@ -26,7 +26,7 @@ namespace TicTacToeAPI.UnitTests.Systems.Controllers
             await dbContext.Games.AddAsync(newGame);
             await dbContext.SaveChangesAsync();
 
-            var newMove = new NewMove() { GameID = newGame.Id.ToString(), MoveIndex = 5, PlayerNameId = "TestPlayer1" };
+            var newMove = new NewMove() { GameId = newGame.Id.ToString(), MoveIndex = 5, PlayerNameId = "TestPlayer1" };
 
             //Act
             var okObjectResult = (OkObjectResult)await sut.PostNewMove(newMove);
@@ -51,7 +51,7 @@ namespace TicTacToeAPI.UnitTests.Systems.Controllers
             await dbContext.SaveChangesAsync();
 
             //Invalid game id
-            var newMove = new NewMove() { GameID = "InvalidGameID", MoveIndex = 0, PlayerNameId = "TestPlayer1" };
+            var newMove = new NewMove() { GameId = "InvalidGameID", MoveIndex = 0, PlayerNameId = "TestPlayer1" };
 
             //Act
             var badRequestObjectResult = (BadRequestObjectResult)await sut.PostNewMove(newMove);
@@ -77,7 +77,7 @@ namespace TicTacToeAPI.UnitTests.Systems.Controllers
             await dbContext.SaveChangesAsync();
 
             //game already finished
-            var newMove = new NewMove() { GameID = newGame.Id.ToString(), MoveIndex = 0, PlayerNameId = "TestPlayer1" };
+            var newMove = new NewMove() { GameId = newGame.Id.ToString(), MoveIndex = 0, PlayerNameId = "TestPlayer1" };
 
             //Act
             var badRequestObjectResult = (BadRequestObjectResult)await sut.PostNewMove(newMove);
@@ -103,7 +103,7 @@ namespace TicTacToeAPI.UnitTests.Systems.Controllers
             await dbContext.SaveChangesAsync();
 
             //player is not register in the game 
-            var newMove = new NewMove() { GameID = newGame.Id.ToString(), MoveIndex = 0, PlayerNameId = "InvalidPlayerID" };
+            var newMove = new NewMove() { GameId = newGame.Id.ToString(), MoveIndex = 0, PlayerNameId = "InvalidPlayerID" };
 
             //Act
             var badRequestObjectResult = (BadRequestObjectResult)await sut.PostNewMove(newMove);
@@ -129,9 +129,9 @@ namespace TicTacToeAPI.UnitTests.Systems.Controllers
             await dbContext.SaveChangesAsync();
 
             //select move index 4
-            var oldMove = new NewMove() { GameID = newGame.Id.ToString(), MoveIndex = 4, PlayerNameId = "TestPlayer1" };
+            var oldMove = new NewMove() { GameId = newGame.Id.ToString(), MoveIndex = 4, PlayerNameId = "TestPlayer1" };
             //select move index 4 again
-            var newMove = new NewMove() { GameID = newGame.Id.ToString(), MoveIndex = 4, PlayerNameId = "TestPlayer2" };
+            var newMove = new NewMove() { GameId = newGame.Id.ToString(), MoveIndex = 4, PlayerNameId = "TestPlayer2" };
 
             //Act
             var okObjectResult = (OkObjectResult)await sut.PostNewMove(oldMove);
@@ -161,9 +161,9 @@ namespace TicTacToeAPI.UnitTests.Systems.Controllers
             await dbContext.SaveChangesAsync();
 
             //move index 1-9 is valid
-            var moveInvalid1 = new NewMove() { GameID = newGame.Id.ToString(), MoveIndex = 0, PlayerNameId = "TestPlayer1" };
-            var moveInvalid2 = new NewMove() { GameID = newGame.Id.ToString(), MoveIndex = 10, PlayerNameId = "TestPlayer2" };
-            var moveValid = new NewMove() { GameID = newGame.Id.ToString(), MoveIndex = 5, PlayerNameId = "TestPlayer1" };
+            var moveInvalid1 = new NewMove() { GameId = newGame.Id.ToString(), MoveIndex = 0, PlayerNameId = "TestPlayer1" };
+            var moveInvalid2 = new NewMove() { GameId = newGame.Id.ToString(), MoveIndex = 10, PlayerNameId = "TestPlayer2" };
+            var moveValid = new NewMove() { GameId = newGame.Id.ToString(), MoveIndex = 5, PlayerNameId = "TestPlayer1" };
 
             //Act
             var badRequestObjectResult1 = (BadRequestObjectResult)await sut.PostNewMove(moveInvalid1);

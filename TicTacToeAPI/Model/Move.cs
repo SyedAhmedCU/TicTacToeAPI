@@ -10,7 +10,7 @@ namespace TicTacToeAPI.Model
         [Required]
         public string PlayerNameId { get; set; } = string.Empty;
         [Required]
-        public string GameID { get; set; } = string.Empty;
+        public string GameId { get; set; } = string.Empty;
         [Required]
         public int MoveIndex { get; set; }
     }

@@ -24,7 +24,7 @@ namespace TicTacToeAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> PostNewMove(NewMove newMove)
         {
-            var gameExist = await dbContext.Games.Where(g => g.Id.ToString() == newMove.GameID && g.GameStatus == GameState.ongoing).FirstOrDefaultAsync();
+            var gameExist = await dbContext.Games.Where(g => g.Id.ToString() == newMove.GameId && g.GameStatus == GameState.ongoing).FirstOrDefaultAsync();
             // find a game with the game id 
             if (gameExist == null)
                 return BadRequest("No ongoing game was found with the game id. Please use correct game id or start a game.");
@@ -41,7 +41,7 @@ namespace TicTacToeAPI.Controllers
                 return BadRequest("Invalid move, choose between 1-9.");
 
             //check if the move is available or already registered
-            var moveExist = await dbContext.Moves.Where(g => g.GameID.ToString() == newMove.GameID && g.MoveIndex == newMove.MoveIndex).FirstOrDefaultAsync();
+            var moveExist = await dbContext.Moves.Where(g => g.GameId.ToString() == newMove.GameId && g.MoveIndex == newMove.MoveIndex).FirstOrDefaultAsync();
             if (moveExist != null)
                 return BadRequest("Move already registered. Try another.");
 
@@ -51,7 +51,7 @@ namespace TicTacToeAPI.Controllers
             var move = new Move()
             {
                 Id = Guid.NewGuid(),
-                GameID = newMove.GameID,
+                GameId = newMove.GameId,
                 PlayerNameId = newMove.PlayerNameId,
                 MoveIndex = newMove.MoveIndex
             };
@@ -63,7 +63,7 @@ namespace TicTacToeAPI.Controllers
             await dbContext.SaveChangesAsync();
 
             bool currentPlayerWin = false;
-            var checkMoves = await dbContext.Moves.Where(g => g.GameID == move.GameID && g.PlayerNameId == move.PlayerNameId).ToListAsync();
+            var checkMoves = await dbContext.Moves.Where(g => g.GameId == move.GameId && g.PlayerNameId == move.PlayerNameId).ToListAsync();
             if (checkMoves.Count() == 3)
                 currentPlayerWin = GameLogic(checkMoves);
 
