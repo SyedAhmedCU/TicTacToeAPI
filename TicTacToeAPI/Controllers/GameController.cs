@@ -18,8 +18,30 @@ namespace TicTacToeAPI.Controllers
             this.dbContext = dbContext;
         }
         /// <summary>
-        /// using HttpGet method to find the active games from the database context
+        /// Get a list of currently running games
         /// </summary>
+        /// <remarks>
+        ///     
+        /// Sample response:
+        /// 
+        ///     [
+        ///         {
+        ///             "gameStatus": "ongoing",
+        ///             "moveRegistered": 0,
+        ///             "gameId": "fdb21950-f250-4886-aa20-0ca6b0da6850",
+        ///             "playerX": "Pam",
+        ///             "playerO": "Jim"
+        ///         },
+        ///         {
+        ///             "gameStatus": "ongoing",
+        ///             "moveRegistered": 0,
+        ///             "gameId": "161d4d24-da3a-4701-bcd6-5147c8b708fb",
+        ///             "playerX": "Michael",
+        ///             "playerO": "Toby"
+        ///         }
+        ///     ]
+        /// 
+        /// </remarks>
         /// <returns> List of active games with their game id, status, the number of moves registered for each and the names of the players.</returns>
         [HttpGet]
         public async Task<IActionResult> GetCurrentGames()
@@ -41,11 +63,28 @@ namespace TicTacToeAPI.Controllers
             return Ok(activeGames);
         }
         /// <summary>
-        /// Creates a new game object using model and HttpPost method and stores it in memory. 
-        /// Input parameters are the unique name id of player X and player O. 
+        /// Start a new game 
         /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /Game
+        ///     {
+        ///         "playerX": "Ryan",
+        ///         "playerO": "Kelly"
+        ///     }
+        ///
+        /// Sample response:
+        ///
+        ///     {
+        ///         "gameId": "de905ed5-8742-437d-9e1a-f7aa7c4ad01d",
+        ///         "playerX": "Ryan",
+        ///         "playerO": "Kelly"
+        ///     }
+        ///
+        /// </remarks>
         /// <returns> New game id and players name id.
-        /// If both name ids are same, returns bad request 400.
+        /// If both name ids are same, returns bad request status code 400.
         /// </returns>
         [HttpPost]
         public async Task<IActionResult> StartGame(GamePlayers gamePlayers)
