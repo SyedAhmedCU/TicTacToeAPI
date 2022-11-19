@@ -6,7 +6,7 @@
     /// is the magic constant which is 15 for this case. 
     /// A player will win when the sum of his moves is equal to 15.
     /// </summary>
-    public enum MoveConstraint { firstPlace = 1, lastPlace = 9, magicConstant = 15, maxMoves = 9 }
+    public enum MoveConstraint { magicConstant = 15, maxMoves = 9 }
     /// <summary>
     /// GameState enum : ongoing = 0, win = 1, draw=2
     /// </summary>

@@ -36,10 +36,6 @@ namespace TicTacToeAPI.Controllers
             if (currentPlayer != playerX && currentPlayer != playerO)
                 return BadRequest("Player is not in this game.");
 
-            //check if the move is outside the limit (1-9)
-            if (newMove.MoveIndex < (int)MoveConstraint.firstPlace || newMove.MoveIndex > (int)MoveConstraint.lastPlace)
-                return BadRequest("Invalid move, choose between 1-9.");
-
             //check if the move is available or already registered
             var moveExist = await dbContext.Moves.Where(g => g.GameId.ToString() == newMove.GameId && g.MoveIndex == newMove.MoveIndex).FirstOrDefaultAsync();
             if (moveExist != null)
