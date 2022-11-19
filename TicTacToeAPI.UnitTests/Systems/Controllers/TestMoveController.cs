@@ -34,7 +34,7 @@ namespace TicTacToeAPI.UnitTests.Systems.Controllers
             //Assert
             okObjectResult.StatusCode.Should().Be(200);
             var expectedMessage = Assert.IsType<string>(okObjectResult.Value);
-            Assert.Equal("Move is registered successfully!", expectedMessage);
+            Assert.Equal(newMove.PlayerNameId + "'s move is registered successfully!", expectedMessage);
         }
         [Fact]
         public async Task Post_InvalidGameID_ReturnStatusCode400WithErrorMsg()
