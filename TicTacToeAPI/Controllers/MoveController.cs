@@ -41,15 +41,16 @@ namespace TicTacToeAPI.Controllers
             if (moveExist != null)
                 return BadRequest("Move already registered. Try another.");
 
-            //check if the move is outside limit (0-8)
+            //check if the move is outside the limit (1-9)
             if (newMove.MoveIndex < (int)MoveConstraint.firstPlace || newMove.MoveIndex > (int)MoveConstraint.lastPlace)
-                return BadRequest("Invalid move, choose between 0-8.");
+                return BadRequest("Invalid move, choose between 1-9.");
 
             //If the move passes the validation, increase the move count
             var latestMoveCount = gameExist.MoveRegistered + 1;
 
             var move = new Move()
             {
+                Id = Guid.NewGuid(),
                 GameID = newMove.GameID,
                 PlayerNameId = newMove.PlayerNameId,
                 MoveIndex = newMove.MoveIndex
@@ -61,7 +62,39 @@ namespace TicTacToeAPI.Controllers
             gameExist.MoveRegistered = latestMoveCount;
             await dbContext.SaveChangesAsync();
 
-            return Ok("Move is registered successfully!");
+            bool currentPlayerWin = false;
+            var checkMoves = await dbContext.Moves.Where(g => g.GameID == move.GameID && g.PlayerNameId == move.PlayerNameId).ToListAsync();
+            if (checkMoves.Count() == 3)
+                currentPlayerWin = GameLogic(checkMoves);
+
+            if (currentPlayerWin == true)
+            {
+                gameExist.GameStatus = GameState.win;
+                await dbContext.SaveChangesAsync();
+                return Ok(currentPlayer + " wins the game!");
+            }
+            else if (latestMoveCount >= (int)MoveConstraint.maxMoves || checkMoves.Count() > 3)
+            {
+                gameExist.GameStatus = GameState.draw;
+                await dbContext.SaveChangesAsync();
+                return Ok("Game ended as a draw!");
+            }
+            else
+            {
+                return Ok("Move is registered successfully!");
+            }
+        }
+        private static bool GameLogic(List<Move> allMoves)
+        {
+            int sum = 0;
+            foreach (var move in allMoves)
+            {
+                sum += move.MoveIndex; 
+            }
+            if (sum == (int)MoveConstraint.magicConstant)
+                return true;
+
+            return false;
         }
     }
 }
