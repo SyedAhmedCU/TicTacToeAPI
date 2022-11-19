@@ -8,7 +8,7 @@ namespace TicTacToeAPI.Model
     public class NewPlayer
     {
         [Required]
-        public string Name { get; set; } = string.Empty;
+        public string NameId { get; set; } = string.Empty;
     }
     public class Player : NewPlayer
     {

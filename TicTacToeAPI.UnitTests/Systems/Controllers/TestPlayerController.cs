@@ -35,7 +35,7 @@ namespace TicTacToeAPI.UnitTests.Systems.Controllers
             var dbContext = new TicTacToeAPIDbContext(optionsBuilder.Options);
             //Arrange
             var sut = new PlayerController(dbContext);
-            var testPlayer = new NewPlayer() { Name = "TestPlayer" };
+            var testPlayer = new NewPlayer() { NameId = "TestPlayer" };
             //Act
             var OkObjectResult = (OkObjectResult)await sut.AddPlayer(testPlayer);
             //Assert
@@ -50,8 +50,8 @@ namespace TicTacToeAPI.UnitTests.Systems.Controllers
             var dbContext = new TicTacToeAPIDbContext(optionsBuilder.Options);
             //Arrange
             var sut = new PlayerController(dbContext);
-            var testPlayer1 = new NewPlayer() { Name = "SameTestPlayer" };
-            var testPlayer2 = new NewPlayer() { Name = "SameTestPlayer" };
+            var testPlayer1 = new NewPlayer() { NameId = "SameTestPlayer" };
+            var testPlayer2 = new NewPlayer() { NameId = "SameTestPlayer" };
             //Act
             //adding same player should return a bad request 
             var OkObjectResult = (OkObjectResult)await sut.AddPlayer(testPlayer1);

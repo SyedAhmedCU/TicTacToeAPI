@@ -83,14 +83,14 @@ namespace TicTacToeAPI.Controllers
         ///     }
         ///
         /// </remarks>
-        /// <returns> New game id and players name id.
-        /// If both name ids are same, returns bad request status code 400.
+        /// <returns> New gameId and players nameId.
+        /// If both nameIds are same, returns bad request status code 400.
         /// </returns>
         [HttpPost]
         public async Task<IActionResult> StartGame(GamePlayers gamePlayers)
         {
-            var xPlayer = await dbContext.Players.Where(p => p.Name == gamePlayers.PlayerX).FirstOrDefaultAsync();
-            var oPlayer = await dbContext.Players.Where(p => p.Name == gamePlayers.PlayerO).FirstOrDefaultAsync();
+            var xPlayer = await dbContext.Players.Where(p => p.NameId.ToLower() == gamePlayers.PlayerX.ToLower()).FirstOrDefaultAsync();
+            var oPlayer = await dbContext.Players.Where(p => p.NameId.ToLower() == gamePlayers.PlayerO.ToLower()).FirstOrDefaultAsync();
 
             if (gamePlayers.PlayerX == gamePlayers.PlayerO)
                 return BadRequest("PlayerX and PlayerO can't be same.");
@@ -99,28 +99,28 @@ namespace TicTacToeAPI.Controllers
             {
                 Player newPlayer = new()
                 {
-                    Name = gamePlayers.PlayerX
+                    NameId = gamePlayers.PlayerX
                 };
                 await dbContext.Players.AddAsync(newPlayer);
                 await dbContext.SaveChangesAsync();
-                xPlayer = await dbContext.Players.Where(p => p.Name == gamePlayers.PlayerX).FirstOrDefaultAsync();
+                xPlayer = await dbContext.Players.Where(p => p.NameId.ToLower() == gamePlayers.PlayerX.ToLower()).FirstOrDefaultAsync();
             }
             if (oPlayer == null)
             {
                 Player newPlayer = new()
                 {
-                    Name = gamePlayers.PlayerO
+                    NameId = gamePlayers.PlayerO
                 };
                 await dbContext.Players.AddAsync(newPlayer);
                 await dbContext.SaveChangesAsync();
-                oPlayer = await dbContext.Players.Where(p => p.Name == gamePlayers.PlayerO).FirstOrDefaultAsync();
+                oPlayer = await dbContext.Players.Where(p => p.NameId.ToLower() == gamePlayers.PlayerO.ToLower()).FirstOrDefaultAsync();
             }
 
             Game game = new()
             {
                 Id = Guid.NewGuid(),
-                PlayerX = xPlayer.Name,
-                PlayerO = oPlayer.Name,
+                PlayerX = xPlayer.NameId,
+                PlayerO = oPlayer.NameId,
                 GameStatus = GameState.ongoing,
                 MoveRegistered = 0
             };

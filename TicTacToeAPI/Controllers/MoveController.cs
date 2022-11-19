@@ -48,7 +48,7 @@ namespace TicTacToeAPI.Controllers
             string playerX = gameExist.PlayerX;
             string playerO = gameExist.PlayerO;
             string currentPlayer = newMove.PlayerNameId;
-            if (currentPlayer != playerX && currentPlayer != playerO)
+            if (currentPlayer.ToLower() != playerX.ToLower() && currentPlayer.ToLower() != playerO.ToLower())
                 return BadRequest("Player is not in this game.");
 
             //check if the move is available or already registered
@@ -74,7 +74,7 @@ namespace TicTacToeAPI.Controllers
             await dbContext.SaveChangesAsync();
 
             bool currentPlayerWin = false;
-            var checkMoves = await dbContext.Moves.Where(g => g.GameId == move.GameId && g.PlayerNameId == move.PlayerNameId).ToListAsync();
+            var checkMoves = await dbContext.Moves.Where(g => g.GameId == move.GameId && g.PlayerNameId.ToLower() == move.PlayerNameId.ToLower()).ToListAsync();
             if (checkMoves.Count() == 3)
                 currentPlayerWin = GameLogic(checkMoves);
 
