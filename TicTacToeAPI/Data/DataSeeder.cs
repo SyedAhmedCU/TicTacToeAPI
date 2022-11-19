@@ -32,6 +32,30 @@ namespace TicTacToeAPI.Data
                     gameContext.Players.AddRange(players);
                     gameContext.SaveChanges();
                 }
+                if (!gameContext.Games.Any())
+                {
+                    var game = new List<Game>()
+                    {
+                        new Game()
+                        {
+                            Id = Guid.NewGuid(),
+                            PlayerX = "Michael",
+                            PlayerO = "Toby",
+                            GameStatus = GameState.ongoing,
+                            MoveRegistered = 0
+                        },
+                        new Game()
+                        {
+                            Id = Guid.NewGuid(),
+                            PlayerX = "Pam",
+                            PlayerO = "Jim",
+                            GameStatus = GameState.ongoing,
+                            MoveRegistered = 0
+                        }
+                    };
+                    gameContext.Games.AddRange(game);
+                    gameContext.SaveChanges();
+                }
             }
         }
     }
