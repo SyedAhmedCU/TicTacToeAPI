@@ -2,7 +2,7 @@
 [![CI](https://github.com/SyedAhmedCU/TicTacToeAPI/actions/workflows/ci.yaml/badge.svg?&service=github)](https://github.com/SyedAhmedCU/TicTacToeAPI/actions/workflows/ci.yaml)
 [![Coverage Status](https://coveralls.io/repos/github/SyedAhmedCU/TicTacToeAPI/badge.svg?branch=main&kill_cache=1)](https://coveralls.io/github/SyedAhmedCU/TicTacToeAPI?branch=main)
 
-Creating a .NET 6.0 Web API that provides endpoints for managing games of Tic-Tac-Toe. These endpoints are to take the described inputs as JSON and return the described output. The API application is runnable using Docker and Docker Compose. Game data is managed using Entity Framework and in-memory database.
+Creating a .NET 6.0 Web API that provides endpoints for managing games of Tic-Tac-Toe with 3x3 grid. These endpoints are to take the described inputs as JSON and return the described output. The API application is runnable using Docker. Game data is managed using Entity Framework and in-memory database.
 
 ## Overview
 
@@ -20,16 +20,16 @@ This endpoint is for starting a game. This endpoint returns a new game Id (Guid)
 - Sample request: GamePlayer JSON
 ```JSON
 {
-    "playerX": "Ryan",
-    "playerO": "Kelly"
+    "playerX": "Jim",
+    "playerO": "Pam"
 }
 ```
 - Sample response: StartedGame JSON block
 ```Json
 {
-    "gameId": "de905ed5-8742-437d-9e1a-f7aa7c4ad01d",
-    "playerX": "Ryan",
-    "playerO": "Kelly"
+    "gameId": "ae3c1d59-a13c-4a8b-a4b5-c4c63edeccb5",
+    "playerX": "Jim",
+    "playerO": "Pam"
 }
 ```
 ### Endpoint 2 `POST /api/Move`
@@ -38,7 +38,7 @@ This endpoint is for registering a player move. This endpoint takes the player I
 ```JSON
 {
     "playerNameId": "Jim",
-    "gameId": "fdb21950-f250-4886-aa20-0ca6b0da6850",
+    "gameId": "ae3c1d59-a13c-4a8b-a4b5-c4c63edeccb5",
     "moveIndex": 5
 }
 ```
@@ -54,7 +54,7 @@ This endpoint is for retrieving a list of currently running games including the 
     {
         "gameStatus": "ongoing",
         "moveRegistered": 0,
-        "gameId": "fdb21950-f250-4886-aa20-0ca6b0da6850",
+        "gameId": "ae3c1d59-a13c-4a8b-a4b5-c4c63edeccb5",
         "playerX": "Pam",
         "playerO": "Jim"
     },
@@ -67,21 +67,64 @@ This endpoint is for retrieving a list of currently running games including the 
     }
 ]
 ````
-### Endpoint 4
-
-### Endpoint 5
-
-### Endpont 6
-
-
-### In-memory database ERD
-<img src="https://user-images.githubusercontent.com/55814513/202872060-03d5fba5-a24e-45f1-b558-2fd63ee8785b.png" alt="ERD of tictactoe Api" width="600px" /> <br>
+### Endpoint 4 `GET /api/Move`
+This endpoint is for retrieving all the registered move from all the games and players
+- Sample response: JSON array of Move blocks
+```JSON
+[
+  {
+    "id": "5fafb701-c4a4-4d3d-8044-96d0ed4ee6f4",
+    "playerNameId": "Jim",
+    "gameId": "ae3c1d59-a13c-4a8b-a4b5-c4c63edeccb5",
+    "moveIndex": 5
+  },
+  {
+    "id": "53d04b14-c011-4aae-81ba-5dd945b1e1a8",
+    "playerNameId": "Pam",
+    "gameId": "ae3c1d59-a13c-4a8b-a4b5-c4c63edeccb5",
+    "moveIndex": 9
+  }
+]
+```
+### Endpoint 5 `GET /api/Player`
+This endpoint is for retrieving all players with nameId and Id (guid).
+- Sample response: JSON array of Player blocks
+```JSON
+[
+  {
+    "id": "2aac628a-f496-47aa-ad43-78f26427beb2",
+    "nameId": "Pam"
+  },
+  {
+    "id": "f4a0ed95-4a20-44b2-9b79-82a7fa0cc746",
+    "nameId": "Jim"
+  }
+]
+```
+### Endpont 6 `POST /api/Player`
+This endpoint is for adding a new player with just a name. It will create an id (Guid). Name is used as an unique id, so if the player name already exist, it will return a satus code 400 with error message.
+- Sample request: NewPlayer JSON
+```JSON
+{
+    "nameId": "Oscar"
+}
+```
+- Sample response: A Player JSON block 
+```JSON
+{
+    "id": "e71b0cdc-d0f4-4123-8fa9-bd05b7614207",
+    "nameId": "Oscar"
+}
+```
+### In-memory Database ERD
+<img src="https://user-images.githubusercontent.com/55814513/202874151-bc29de1b-b38a-4318-a23a-4ebcd974c8ad.png" alt="ERD of tictactoe Api" width="700px" /> <br>
 
 ## Game Logic Using Magic Square
 <img src="https://user-images.githubusercontent.com/55814513/202608065-e682080f-6fd9-4b0c-8d29-08d0e2f324e0.png" alt="Magic Square" width="200px" /> <br>
 - A magic square is a square array of numbers consisting of the distinct positive integers 1, 2, ..., n^2 arranged such that the sum of the n numbers in any horizontal, vertical, or main diagonal line is always the same number known as the magic constant. Source: <a href="https://mathworld.wolfram.com/MagicSquare.html">Wolfram Mathworld</a> <br>
 - The game has a 3x3 grid with 9 possible moves. Each move has an index number from 1-9. These are arranged according to the magic square. So, sum of 3 numbers joining horizontal, vertical, or main diagonal line is the magic constant which is 15 for this case. A player will win when the sum of his moves is equal to 15.
-
+- Win: If the sum of a player's 3 moves becomes 15.
+- Draw: If the total registered moves reaches 9 and none of the player wins. 
 ## How To Run
 
 ### Steps For Cloning the Project
