@@ -171,5 +171,37 @@ namespace TicTacToeAPI.UnitTests.Systems.Controllers
             var expectedMessage = Assert.IsType<string>(badRequestObjectResult.Value);
             Assert.Equal("Move already registered. Try another.", expectedMessage);
         }
+        [Fact]
+        public async Task Post_ConsecutiveMovesBySamePlayer_ReturnStatusCode200ErrorMsg()
+        {
+            //add in memory database context
+            var optionsBuilder = new DbContextOptionsBuilder<TicTacToeAPIDbContext>()
+                .UseInMemoryDatabase("GameDb");
+            var dbContext = new TicTacToeAPIDbContext(optionsBuilder.Options);
+            //Arrange
+            var sut = new MoveController(dbContext);
+            //add a new game
+            var newGame = new Game { Id = Guid.NewGuid(), PlayerX = "TestPlayer1", PlayerO = "TestPlayer2", GameStatus = GameState.ongoing, MoveRegistered = 0 };
+            await dbContext.Games.AddAsync(newGame);
+            await dbContext.SaveChangesAsync();
+
+            //select move index 4
+            var oldMove = new NewMove() { GameId = newGame.Id.ToString(), MoveIndex = 4, PlayerNameId = "TestPlayer1" };
+            //select move index 4 again
+            var newMove = new NewMove() { GameId = newGame.Id.ToString(), MoveIndex = 7, PlayerNameId = "TestPlayer1" };
+
+            //Act
+            var okObjectResult = (OkObjectResult)await sut.PostNewMove(oldMove);
+            var badRequestObjectResult = (BadRequestObjectResult)await sut.PostNewMove(newMove);
+
+            //Assert
+            //old move is registered successfully
+            okObjectResult.StatusCode.Should().Be(200);
+            //new move is not registered
+            badRequestObjectResult.StatusCode.Should().Be(400);
+            //test message
+            var expectedMessage = Assert.IsType<string>(badRequestObjectResult.Value);
+            Assert.Equal(newMove.PlayerNameId + " already made the last move.", expectedMessage);
+        }
     }
 }
