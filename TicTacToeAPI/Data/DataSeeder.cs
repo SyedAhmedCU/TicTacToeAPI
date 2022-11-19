@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Builder;
 using TicTacToeAPI.Data;
 using TicTacToeAPI.Model;
 
 namespace TicTacToeAPI.Data
 {
+    [ExcludeFromCodeCoverage]
     public class DataSeeder
     {
         public static void Seed(IApplicationBuilder applicationBuilder)
