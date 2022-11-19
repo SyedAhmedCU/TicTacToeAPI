@@ -146,39 +146,5 @@ namespace TicTacToeAPI.UnitTests.Systems.Controllers
             var expectedMessage = Assert.IsType<string>(badRequestObjectResult.Value);
             Assert.Equal("Move already registered. Try another.", expectedMessage);
         }
-        [Fact]
-        public async Task Post_InvalidMoveIndex_ReturnStatusCode400WithErrorMsg()
-        {
-            //add in memory database context
-            var optionsBuilder = new DbContextOptionsBuilder<TicTacToeAPIDbContext>()
-                .UseInMemoryDatabase("GameDb");
-            var dbContext = new TicTacToeAPIDbContext(optionsBuilder.Options);
-            //Arrange
-            var sut = new MoveController(dbContext);
-            //add a new game
-            var newGame = new Game { Id = Guid.NewGuid(), PlayerX = "TestPlayer1", PlayerO = "TestPlayer2", GameStatus = GameState.ongoing, MoveRegistered = 0};
-            await dbContext.Games.AddAsync(newGame);
-            await dbContext.SaveChangesAsync();
-
-            //move index 1-9 is valid
-            var moveInvalid1 = new NewMove() { GameId = newGame.Id.ToString(), MoveIndex = 0, PlayerNameId = "TestPlayer1" };
-            var moveInvalid2 = new NewMove() { GameId = newGame.Id.ToString(), MoveIndex = 10, PlayerNameId = "TestPlayer2" };
-            var moveValid = new NewMove() { GameId = newGame.Id.ToString(), MoveIndex = 5, PlayerNameId = "TestPlayer1" };
-
-            //Act
-            var badRequestObjectResult1 = (BadRequestObjectResult)await sut.PostNewMove(moveInvalid1);
-            var badRequestObjectResult2 = (BadRequestObjectResult)await sut.PostNewMove(moveInvalid2);
-            var okObjectResult = (OkObjectResult)await sut.PostNewMove(moveValid);
-
-            //Assert
-            badRequestObjectResult1.StatusCode.Should().Be(400);
-            badRequestObjectResult2.StatusCode.Should().Be(400);
-            okObjectResult.StatusCode.Should().Be(200);
-            //test messaged
-            var expectedMessage1 = Assert.IsType<string>(badRequestObjectResult1.Value);
-            var expectedMessage2 = Assert.IsType<string>(badRequestObjectResult2.Value);
-            Assert.Equal("Invalid move, choose between 1-9.", expectedMessage1);
-            Assert.Equal("Invalid move, choose between 1-9.", expectedMessage2);
-        }
     }
 }
