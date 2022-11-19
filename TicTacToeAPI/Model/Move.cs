@@ -12,6 +12,7 @@ namespace TicTacToeAPI.Model
         [Required]
         public string GameId { get; set; } = string.Empty;
         [Required]
+        [Range(1, 9)]
         public int MoveIndex { get; set; }
     }
     //For creating dbset 
